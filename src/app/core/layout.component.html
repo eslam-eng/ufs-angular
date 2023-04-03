@@ -1,0 +1,58 @@
+<app-loading></app-loading>
+
+<div class="wrapper" style="height: auto; min-height: 100%;">
+
+
+  <app-nav-bar></app-nav-bar>
+
+  <app-side-bar></app-side-bar>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" style="min-height: 926px;">
+
+    <!-- loading -->
+    <div class="w3-modal app-loader"  style="z-index: 999999999;background-color: rgba(0,0,0,0.5)!important;" >
+      <div class="w3-modal-content w3-xlarge w3-text-white text-center" style="background-color: transparent!important;" >
+        <i class="fa fa-spinner fa-spin w3-jumbo"></i>
+        <br>
+        <b class="w3-large w3-xxlarge" >{{ "please wait" | trans }}</b>
+      </div>
+    </div>
+
+    <!-- remove selected -->
+    <div class="modal app-remove-selected" id="removeSelectedModal"  >
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">{{ "please wait while remove selected" | trans }}</h4>
+          </div>
+          <div class="modal-body text-center">
+              <i class="fa fa-spin fa-spinner w3-xxlarge w3-text-indigo"></i>
+              <br>
+              <div class="w3-large w3-center">
+                <br>
+                <b class="w3-text-red" id="removedSelectedItem" ></b> /
+                <b class="w3-text-indigo" id="totalSelectedItem" ></b>
+              </div>
+              <br>
+              <div class="w3-padding w3-border w3-border-gray w3-round result" id="resultRemoveSelected" >
+
+              </div>
+              <br>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Main content -->
+    <section class="content">
+      <router-outlet></router-outlet>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+
+</div>

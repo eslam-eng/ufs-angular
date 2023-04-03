@@ -1,0 +1,119 @@
+<app-breadcrumb [breadcrumbList]="breadcrumbList" ></app-breadcrumb>
+<br>
+
+<div class=" safe-box w3-white w3-display-container w3-round w3-input">
+
+  <div class="row">
+
+    <div class="col-lg-12 col-md-12 col-sm-12">
+      <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+        <div class="custom-panel-title w3-light-gray w3-round" >{{ "enter courier sheet code" | trans }}</div>
+          <div class="custom-panel-body row"  >
+
+            <div class="col-lg-4">
+              <label>{{ "company name" | trans }}</label>
+              <br>
+              <select
+              class="form-control input-sm w3-block"
+              (change)="get(true)"
+              style="border-radius: 8px;"
+                [(ngModel)]="filter.company_id" >
+                <option value="">{{ "select all" | trans }}</option>
+                <option *ngFor="let item of companies" value="{{ item.id }}">{{ item.name }}</option>
+              </select>
+            </div>
+
+            <div class="col-lg-4">
+              <label>{{ "date from" | trans }} </label>
+              <br>
+              <input
+              (change)="get(true)"
+                type="date" class="form-control input-sm w3-round"
+                [(ngModel)]="filter.date_from" >
+            </div>
+
+            <div class="col-lg-4">
+              <label>{{ "date to" | trans }} </label>
+              <br>
+              <input
+                (change)="get(true)"
+                type="date" class="form-control input-sm w3-round"
+                [(ngModel)]="filter.date_to" >
+            </div>
+
+
+          </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="w3-block " style="padding: 0px!important" >
+
+    <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+      <div class="custom-panel-title w3-light-gray w3-round" >{{ "sheet awbs" | trans }}</div>
+        <div class="custom-panel-body"  >
+
+          <div class="table-">
+            <table class="table">
+              <tr>
+                <th>#</th>
+                <th>{{ "code" | trans }}</th>
+                <th>{{ "date" | trans }}</th>
+                <th>{{ "company" | trans }}</th>
+                <th>{{ "receiver" | trans }}</th>
+                <th>{{ "collection" | trans }}</th>
+                <th>{{ "shiping_price" | trans }}</th>
+                <th>{{ "net_price" | trans }}</th>
+                <th>{{ "status" | trans }}</th>
+                <th>{{ "paid to customer" | trans }}</th>
+                <th class="hidden" >{{ "notes" | trans }}</th>
+              </tr>
+
+              <tr *ngIf="loading" >
+                <td colspan="13" class="w3-center" >
+                  <i class="fa fa-spin fa-spinner w3-text-indigo"></i>
+                </td>
+              </tr>
+
+              <ng-container *ngFor="let row of selectedAwb.getAll() index as i">
+                <tr *ngIf="filterAwb(row)" >
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ row.code }}</td>
+                  <td>{{ row.date }}</td>
+                  <td>{{ row.company? row.company.name : '' }}</td>
+                  <td>{{ row.receiver? row.receiver.name : '' }}</td>
+                  <td>{{ row.collection }}</td>
+                  <td>{{ row.shiping_price }}</td>
+                  <td>{{ row.net_price }}</td>
+                  <td>{{ row.status? row.status.name : '' }}</td>
+                  <td>
+                    <mat-checkbox
+                      #checkbox
+                      (change)="collect(row, checkbox)"
+                      [disabled]="row.status.code == '8'"
+                      [checked]="row.status.code == '8'" ></mat-checkbox>
+                  </td>
+                  <td class="hidden" >
+                    <input class="w3-input app-form" type="text" [(ngModel)]="row.notes" >
+                  </td>
+                </tr>
+              </ng-container>
+            </table>
+          </div>
+          <br>
+          <button
+            (click)="save()"
+            *ngIf="showSaveBtn"
+            [disabled]="isSubmit"
+            mat-raised-button class="w3-indigo" >
+            <span *ngIf="isSubmit" class="fa fa-spin fa-spinner" ></span>
+            <span *ngIf="!isSubmit" >{{ "save" | trans }}</span>
+          </button>
+        </div>
+    </div>
+
+
+  </div>
+
+</div>

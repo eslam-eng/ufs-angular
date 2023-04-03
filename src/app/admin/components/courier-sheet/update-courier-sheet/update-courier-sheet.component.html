@@ -1,0 +1,133 @@
+<app-breadcrumb [breadcrumbList]="breadcrumbList" ></app-breadcrumb>
+<br>
+
+<div class=" safe-box w3-white w3-display-container w3-round w3-input">
+
+  <div class="row">
+
+    <div class="col-lg-12 col-md-12 col-sm-12">
+      <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+        <div class="custom-panel-title w3-light-gray w3-round" >{{ "enter courier sheet code" | trans }}</div>
+          <div class="custom-panel-body row"  >
+
+            <div class="col-lg-12">
+              <label>{{ "courier sheet code" | trans }} *</label>
+              <input
+              type="number" class="form-control input-sm w3-round"
+              (change)="loadCourierSheet()"
+              [(ngModel)]="filter.id" >
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="w3-block " style="padding: 0px!important" >
+
+    <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+      <div class="custom-panel-title w3-light-gray w3-round" >{{ "sheet awbs" | trans }}</div>
+        <div class="custom-panel-body"  >
+
+          <div class="">
+            <label for="">{{ "change status for awbs" | trans }}</label>
+            <br>
+            <select class="form-control"
+                (change)="changeAllStatus()"
+                [(ngModel)]="generalStatus" >
+                <ng-container *ngFor="let item of status"  >
+                  <option [value]="item.id">{{ item.name }}</option>
+                </ng-container>
+            </select>
+          </div>
+          <br>
+          <div class="table-responsive">
+            <table class="table">
+              <tr>
+                <th>#</th>
+                <th>{{ "code" | trans }}</th>
+                <th>{{ "date" | trans }}</th>
+                <th>{{ "company" | trans }}</th>
+                <th>{{ "department" | trans }}</th>
+                <th>{{ "branch" | trans }}</th>
+                <th>{{ "receiver" | trans }}</th>
+                <th>{{ "payment type" | trans }}</th>
+                <th>{{ "service" | trans }}</th>
+                <th>{{ "city" | trans }}</th>
+                <th>{{ "area" | trans }}</th>
+                <th>{{ "status" | trans }}</th>
+                <th>{{ "receiver_name" | trans }}</th>
+                <th>{{ "receiver_title" | trans }}</th>
+                <th>{{ "collected value" | trans }}</th>
+                <th class="hidden" >{{ "notes" | trans }}</th>
+              </tr>
+
+              <tr *ngIf="loading" >
+                <td colspan="13" class="w3-center" >
+                  <i class="fa fa-spin fa-spinner w3-text-indigo"></i>
+                </td>
+              </tr>
+
+              <ng-container *ngFor="let row of selectedAwb.getAll() index as i">
+                <tr *ngIf="filterAwb(row)" >
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ row.code }}</td>
+                  <td>{{ row.date }}</td>
+                  <td>{{ row.company? row.company.name : '' }}</td>
+                  <td>{{ row.department? row.department.name : '' }}</td>
+                  <td>{{ row.branch? row.branch.name : '' }}</td>
+                  <td>{{ row.receiver? row.receiver.name : '' }}</td>
+                  <td>{{ row.payment_type? row.payment_type.name : '' }}</td>
+                  <td>{{ row.service? row.service.name : '' }}</td>
+                  <td>{{ row.city? row.city.name : '' }}</td>
+                  <td>{{ row.area? row.area.name : '' }}</td>
+                  <td>
+                    <select class="form-control"
+                    (change)="changeStatus()"
+                    [(ngModel)]="row.status_id" >
+                      <ng-container *ngFor="let item of status"  >
+                        <option
+                          [value]="item.id">{{ item.name }}</option>
+                      </ng-container>
+                    </select>
+                  </td>
+                  <td >
+                    <input
+                    *ngIf="row.status_id == deliverdStatus.id"
+                    class="form-control"
+                    type="text" [(ngModel)]="row.receiver_name" >
+                  </td>
+                  <td >
+                    <input
+                    *ngIf="row.status_id == deliverdStatus.id"
+                    class="form-control"
+                    type="text" [(ngModel)]="row.receiver_title" >
+                  </td>
+                  <td>
+                    <input
+                    class="form-control"
+                    type="text" [(ngModel)]="row.collection" >
+                  </td>
+                  <td class="hidden" >
+                    <input class="w3-input app-form" type="text" [(ngModel)]="row.notes" >
+                  </td>
+                </tr>
+              </ng-container>
+            </table>
+          </div>
+          <br>
+          <button
+            (click)="save()"
+            *ngIf="showSaveBtn"
+            [disabled]="isSubmit"
+            mat-raised-button class="w3-indigo" >
+            <span *ngIf="isSubmit" class="fa fa-spin fa-spinner" ></span>
+            <span *ngIf="!isSubmit" >{{ "save" | trans }}</span>
+          </button>
+        </div>
+    </div>
+
+
+  </div>
+
+</div>

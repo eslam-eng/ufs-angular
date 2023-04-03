@@ -1,0 +1,126 @@
+<div class="w3-block" permission="permission">
+  <div class="w3-white material-shadow safe-box">
+    <div class="safe-box-header w3-large" style="padding: 5px!important">
+      {{ "permissions & groups" | trans }}
+    </div>
+    <div class="border-bottom-dashed"></div>
+    <br>
+
+    <div class="row">
+
+      <div class="col-lg-5  col-md-5 col-sm-12">
+        <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+          <div class="custom-panel-title">
+            {{ "permission_groups" | trans }}
+          </div>
+          <div class="custom-panel-body table-responsive w3-padding w3-center" style="height: 400px;" >
+            <table class=" table-bordered" >
+              <thead>
+                <th>#</th>
+                <th>{{ "name" | trans }}</th>
+                <th>{{ "sort" | trans }}</th>
+                <th></th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of data index as i" >
+                  <td>{{ i + 1 }}</td>
+                  <td>
+                    <input type="text" class="form-control input-sm" [(ngModel)]="item.name" >
+                  </td>
+                  <td>
+                    <input type="text" class="form-control input-sm" [(ngModel)]="item.sort" >
+                  </td>
+                  <td>
+                   <div style="width: 80px" >
+                    <button class="btn btn-success"
+                    [disabled]="isSubmitted"
+                    (click)="send(item, i)" >
+                    <i *ngIf="!isSubmitted" class="fa fa-check" ></i>
+                    <i *ngIf="isSubmitted" class="fa fa-spin fa-spinner" ></i>
+                  </button>
+                    <button class="btn btn-danger"
+                    *ngIf="item.can_delete"
+                    [disabled]="isSubmitted"
+                    (click)="destroy(item, i)" >
+                      <i *ngIf="!isSubmitted" class="fa fa-trash" ></i>
+                      <i *ngIf="isSubmitted" class="fa fa-spin fa-spinner" ></i>
+                    </button>
+                   </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>
+                    <button class="fa fa-plus w3-block btn btn-default btn-flat" (click)="add()" ></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-7  col-md-7 col-sm-12">
+        <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+          <div class="custom-panel-title">
+            {{ "permissions" | trans }}
+          </div>
+          <div class="custom-panel-body table-responsive w3-padding w3-center" style="height: 400px;" >
+            <table class=" table-bordered" >
+              <thead>
+                <th>#</th>
+                <th>{{ "name_en" | trans }}</th>
+                <th>{{ "display_name" | trans }}</th>
+                <th>{{ "group" | trans }}</th>
+                <th></th>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let item of permissions.data index as i">
+                  <tr  >
+                    <td>{{ i + 1 }}</td>
+                    <td>
+                      <input type="text" class="form-control input-sm" [(ngModel)]="item.name" >
+                    </td>
+                    <td>
+                      <input type="text" class="form-control input-sm" [(ngModel)]="item.display_name" >
+                    </td>
+                    <td>
+                      <select class="form-control input-sm" [(ngModel)]="item.group_id"  >
+                        <option *ngFor="let item of data" value="{{ item.id }}">{{ item.name }}</option>
+                      </select>
+                    </td>
+                    <td>
+                    <div style="width: 90px" >
+                      <button class="btn btn-success"
+                      [disabled]="permissions.isSubmitted"
+                      (click)="permissions.send(item, i)" >
+                      <i *ngIf="!permissions.isSubmitted" class="fa fa-check" ></i>
+                      <i *ngIf="permissions.isSubmitted" class="fa fa-spin fa-spinner" ></i>
+                    </button>
+                      <button class="btn btn-danger hidden"
+                      [disabled]="permissions.isSubmitted"
+                      (click)="permissions.destroy(item, i)" >
+                        <i *ngIf="!permissions.isSubmitted" class="fa fa-trash" ></i>
+                        <i *ngIf="permissions.isSubmitted" class="fa fa-spin fa-spinner" ></i>
+                      </button>
+                    </div>
+                    </td>
+                  </tr>
+                </ng-container>
+                <tr>
+                  <td></td>
+                  <td colspan="2" >
+                    <button class="fa fa-plus w3-block btn btn-default btn-flat" (click)="permissions.add()" ></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</div>

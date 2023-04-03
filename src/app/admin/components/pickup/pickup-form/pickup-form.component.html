@@ -1,0 +1,165 @@
+
+<!-- form modal -->
+<div class="modal fade" id="pickupModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content light- w3-animate-top">
+      <div class="modal-header">
+        <h4 class="modal-title text-center w3-xxlarge">
+          <span *ngIf="isUpdate" >{{ "edit pickup" | trans }}</span>
+          <span *ngIf="!isUpdate" >{{ "add pickup" | trans }}</span>
+
+        </h4>
+      </div>
+      <div class="modal-body ">
+        <!--
+        <div class="row">
+
+          <div class="col-lg-6 col-md-6">
+            <mat-form-field appearance="outline" class="w3-block">
+              <mat-label>{{ "date" | trans }} *</mat-label>
+              <input type="date" matInput   [(ngModel)]="resource.date" >
+            </mat-form-field>
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <mat-form-field appearance="outline" class="w3-block">
+              <mat-label>{{ "time_from" | trans }} *</mat-label>
+              <input type="time" matInput [(ngModel)]="resource.time_from" >
+            </mat-form-field>
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <mat-form-field appearance="outline" class="w3-block">
+              <mat-label>{{ "time_to" | trans }} *</mat-label>
+              <input type="time" matInput  [(ngModel)]="resource.time_to" >
+            </mat-form-field>
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ "status" | trans }} *</mat-label>
+              <mat-select  [(ngModel)]="resource.status_id" >
+                <mat-option *ngFor="let item of status" [value]="item.id">
+                  {{ item.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <mat-form-field appearance="outline" class="w3-block" >
+              <mat-label>Outline form field</mat-label>
+              <select matNativeControl required>
+                <option value="volvo">Volvo</option>
+                <option value="saab">Saab</option>
+                <option value="mercedes">Mercedes</option>
+                <option value="audi">Audi</option>
+              </select>
+              <input matInput placeholder="Placeholder">
+              <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+              <mat-hint>Hint</mat-hint>
+            </mat-form-field>
+          </div>
+
+        </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Outline form field</mat-label>
+          <input matInput placeholder="Placeholder">
+          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          <mat-hint>Hint</mat-hint>
+        </mat-form-field>-->
+        <div class="row">
+
+          <div class="col-lg-6 w3-padding">
+            <label>{{ "date" | trans }} *</label>
+            <input type="date" class="form-control input-sm w3-round"  [(ngModel)]="resource.date" >
+          </div>
+
+          <div class="col-lg-6 w3-padding">
+            <label>{{ "status" | trans }} *</label>
+            <select class="form-control input-sm w3-round"  [(ngModel)]="resource.status_id"  >
+              <ng-container *ngFor="let item of status">
+                <option *ngIf="item.type == 'pickup'" value="{{ item.id }}">{{ item.name }}</option>
+              </ng-container>
+            </select>
+          </div>
+
+          <div class="col-lg-6 w3-padding">
+            <label>{{ "time_from" | trans }}  </label>
+            <input type="time" class="form-control input-sm w3-round"  [(ngModel)]="resource.time_from" >
+          </div>
+
+          <div class="col-lg-6 w3-padding">
+            <label>{{ "Pickup Time Ready" | trans }}  </label>
+            <input type="time" class="form-control input-sm w3-round"  [(ngModel)]="resource.time_to" >
+          </div>
+
+          <div class="col-lg-6 w3-padding">
+            <label>{{ "company" | trans }} *</label>
+            <select class="form-control input-sm w3-round"  [(ngModel)]="resource.company_id"  >
+              <option *ngFor="let item of companies" value="{{ item.id }}">{{ item.name }}</option>
+            </select>
+          </div>
+
+
+          <div class="col-lg-6 w3-padding">
+            <label>{{ "courier" | trans }} </label>
+            <select class="form-control input-sm w3-round"  [(ngModel)]="resource.courier_id"  >
+              <ng-container *ngFor="let item of couriers">
+                <option value="{{ item.id }}">{{ item.name }}</option>
+              </ng-container>
+            </select>
+          </div>
+
+          <div class="col-lg-6 w3-padding">
+            <label>{{ "shipment type" | trans }}</label>
+            <select class="form-control input-sm w3-round" [(ngModel)]="resource.shipment_type"  >
+              <option *ngFor="let item of types" value="{{ item }}">{{ item }}</option>
+            </select>
+          </div>
+
+          <div class="col-lg-6 w3-padding">
+            <label>{{ "shipment number" | trans }}</label>
+            <input type="text" class="form-control input-sm w3-round"  [(ngModel)]="resource.shipment_number" >
+          </div>
+
+          <div class="col-lg-6 w3-padding">
+            <label>{{ "Trans Type" | trans }}</label>
+            <select class="form-control input-sm w3-round"  [(ngModel)]="resource.trans_type_id"  >
+              <option *ngFor="let item of transTypes" value="{{ item.id }}">{{ item.name }}</option>
+            </select>
+          </div>
+
+          <div class="col-lg-12 w3-padding">
+            <label>{{ "notes" | trans }} *</label>
+            <textarea  class="form-control input-sm w3-round"  [(ngModel)]="resource.notes" ></textarea>
+          </div>
+
+        </div>
+        <br>
+
+      </div>
+      <div class="modal-footer text-center w3-center">
+
+          <button type="button"
+          class=""
+          style="margin: 5px"
+          mat-raised-button
+          data-dismiss="modal" >{{ "close" | trans }}</button>
+
+          <button class="w3-indigo"
+          [disabled]="isSubmit"
+          style="margin: 5px"
+          mat-raised-button
+          (click)="send(resource)" >
+          <span *ngIf="!isSubmit" >
+            <span *ngIf="!resource.id" >{{ "add" | trans }}</span>
+            <span *ngIf="resource.id" >{{ "edit" | trans }}</span>
+          </span>
+          <span *ngIf="isSubmit" class="fa fa-spin fa-spinner" ></span>
+        </button>
+
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

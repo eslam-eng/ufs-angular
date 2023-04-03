@@ -1,0 +1,37 @@
+<div class="modal fade" id="editAwbModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="background-color: #fafafa;" role="document">
+    <div class="modal-content" style="background-color: #fafafa!important;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{ "write awb code" | trans }}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="col-lg-12 w3-display-container">
+          <label>{{ 'search with awb code' | trans }}</label>
+          <br>
+          <input type="text"
+          [(ngModel)]="code"
+          (change)="search()"
+          class="app-form w3-round input-sm w3-block"
+          placeholder="{{ 'search' | trans }}" >
+
+          <div class="w3-display-topright w3-padding" *ngIf="loading" >
+            <br>
+            <span class="fa fa-spin fa-spinner w3-text-indigo w3-large"></span>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" style="margin: 5px" class="btn btn-default" mat-raised-button data-dismiss="modal">{{ "close" | trans }}</button>
+
+        <button type="button"
+        [disabled]="!canEdit"
+        (click)="edit()"
+        style="margin: 5px" class="btn w3-indigo" mat-raised-button >{{ "edit awb" | trans }}</button>
+
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+

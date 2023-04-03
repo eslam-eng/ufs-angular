@@ -1,0 +1,95 @@
+<div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content " style="background-color: #E6F5E6;" >
+      <div class="modal-header w3-border-0" >
+        <button type="button" class="close w3-text-red" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center">{{ title | trans }}</h4>
+      </div>
+      <div class="modal-body">
+
+        <div *ngIf="step == 1" >
+          <div class="text-center">
+            <a role="button" target="_blank" [href]="templateUrl" mat-raised-button
+            class="w3-large btn material-shadow w3-round circle" >
+              <span class="fa fa-download" ></span> {{ "download template file" | trans }}
+            </a>
+          </div>
+          <br>
+          <br>
+          <ul>
+            <li>
+              {{ "download template file first" | trans }}
+            </li>
+            <li>
+              {{ "then fill exce file template" | trans }}
+            </li>
+            <li>
+              {{ "finally upload the file" | trans }}
+            </li>
+          </ul>
+          <br>
+          <div class="modal-footer w3-center">
+            <button mat-raised-button class="w3-" (click)="goto(2)" >{{ "next" | trans }}</button>
+          </div>
+        </div>
+
+        <div *ngIf="step == 2" >
+          <div class="text-center">
+            <button role="button"  mat-raised-button
+            (click)="changeFileInput()"
+            class="w3-large btn material-shadow w3-round circle" >
+              <span class="fa fa-upload" ></span> {{ "upload your file" | trans }}
+            </button>
+            <br>
+            <b>{{ resource.file? resource.file.name : '' }}</b>
+            <input type="file" (change)="changeFile($event)"  id="importExcelFileInput" class="hidden" accept=".xlsx, .xls, .csv" >
+          </div>
+          <br>
+          <ul>
+            <li>
+              {{ "make sure the format of excel file is the same in template" | trans }}
+            </li>
+          </ul>
+          <br>
+          <div class="w3-block w3-large w3-text-red hidden" *ngIf="errors" [innerHTML]="errors" >
+
+          </div>
+          <br>
+          <button class="btn btn-sm w3-green w3-round material-shadow" *ngIf="!isSubmitted" (click)="exportExcel2()" >{{ "excel" | trans }}</button>
+          <br>
+          <div class="table-responsive" style="height: 150px;" >
+            <table class="table table-bordered " id="errorTable" *ngIf="!isSubmitted" >
+              <tr   class="" >
+                <td  *ngFor="let col of header" >
+                  {{ col }}
+                </td>
+                <td>
+                  {{ "error" | trans }}
+                </td> 
+              </tr>
+              <tr *ngFor="let row of excelRows index as i" class="w3-pale-red" >
+                <td  *ngFor="let col of row" >
+                  {{ col }}
+                </td>
+              </tr>
+            </table>
+          </div>
+          <br>
+
+          <div class="modal-footer w3-center">
+            <button
+            mat-raised-button
+            [disabled]="isSubmitted"
+            class="w3-indigo" (click)="uploadFile()" style="margin: 3px" >
+              <span *ngIf="!isSubmitted" >{{ "submit" | trans }}</span>
+              <span *ngIf="isSubmitted" class="fa fa-spinner fa-spin" ></span>
+            </button>
+            <button mat-raised-button class="w3-" (click)="goto(1)" style="margin: 3px" >{{ "back" | trans }}</button>
+          </div>
+        </div>
+
+
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -1,0 +1,101 @@
+
+<div class="w3-block">
+
+  <app-breadcrumb [breadcrumbList]="breadcrumbList" ></app-breadcrumb>
+
+  <div class="w3-block material-shadow safe-box w3-white w3-display-container" style="padding: 0px!important" >
+
+    <div class="w3-padding w3-display-topright"    >
+      <input type="text" [(ngModel)]="filter.search" class="form-control w3-round" placeholder="{{ 'search' | trans }}" >
+
+
+    </div>
+
+    <div class="w3-padding w3-display-topleft"    >
+      <button class="btn btn-primary" [disabled]="isUpdate" (click)="updateTranslation()" >{{ "save changes" | trans }}</button>
+
+
+    </div>
+
+    <div class="text-center w3-padding">
+      <b>
+        {{ "translations" | trans }}
+      </b>
+      <br>
+      <br>
+    </div>
+
+    <div class="table-responsive"  style="height: 400px" >
+
+    <table class="excel-table table-bordered text-center text-center" id="printable" >
+
+      <tr class="w3-light-gray" >
+        <th class="w3-padding" >{{ "#" | trans }}</th>
+        <th class="w3-padding" >{{ "key" | trans }}</th>
+        <th class="w3-padding" >{{ "name_en" | trans }}</th>
+        <th class="w3-padding" >{{ "name_ar" | trans }}</th>
+      </tr>
+      <ng-container *ngFor="let item of response.data index as i" >
+        <tr
+        *ngIf="search(item)" >
+          <td>
+            <span>{{ i + 1 }}</span>
+          </td>
+          <td>
+            <input
+            type="text"
+            class="w3-block w3-border-0  text-center"
+            readonly
+            [(ngModel)]="item.key"  >
+            <span style="display: none;" >{{ item.key }}</span>
+          </td>
+          <td>
+            <input
+            type="text"
+            style="min-width: 200px;"
+            (change)="item.changed = 1"
+            class="w3-block w3-border-0 text-center"
+            [(ngModel)]="item.name_en" >
+            <span style="display: none;" >{{ item.name_en }}</span>
+          </td>
+          <td>
+            <input
+            type="text"
+            style="min-width: 200px;"
+            (change)="item.changed = 1"
+            class="w3-block w3-border-0 text-center"
+            [(ngModel)]="item.name_ar" >
+            <span style="display: none;" >{{ item.name_ar }}</span>
+          </td>
+        </tr>
+      </ng-container>
+
+    </table>
+    </div>
+
+
+    <div class="text-center w3-center">
+      <nav aria-label="Page navigation">
+        <ul class="pagination">
+          <li>
+            <a class="btn" [ngClass]="{'disabled': !response.prev_page}" (click)="loadPage(response.prev_page)"
+              aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li *ngFor="let item of response.pages_arr">
+            <a class="btn" [ngClass]="{'active w3-indigo': response.current_page == item}"
+              (click)="loadPage(item)">{{ item }}</a>
+          </li>
+          <li>
+            <a class="btn" [ngClass]="{'disabled': !response.next_page}" (click)="loadPage(response.next_page)"
+              aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+  </div>
+</div>

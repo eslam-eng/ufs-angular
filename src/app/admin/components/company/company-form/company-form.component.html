@@ -1,0 +1,142 @@
+
+<!-- form modal -->
+<div class="modal fade" id="companyModal" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content light-gray w3-animate-top">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          <span *ngIf="isUpdate" >{{ "edit company" | trans }}</span>
+          <span *ngIf="!isUpdate" >{{ "add company" | trans }}</span>
+
+        </h4>
+      </div>
+      <div class="modal-body text-center">
+        <img src="{{ resource.logo_url }}" alt="" style="width: 50px;" class="w3-round" >
+        <br>
+        <table class="table">
+          <tr>
+            <th>{{ "logo" | trans }} </th>
+            <td>
+              <input type="file"
+              (change)="loadFile($event, 'logo', resource)"
+              class="form-control input-sm"  [(ngModel)]="resource.logo" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "name" | trans }} *</th>
+            <td>
+              <input type="text" class="form-control input-sm"  [(ngModel)]="resource.name" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "address" | trans }} *</th>
+            <td>
+              <input type="text" class="form-control input-sm"  [(ngModel)]="resource.address" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "phone" | trans }} *</th>
+            <td>
+              <input type="text" class="form-control input-sm"  [(ngModel)]="resource.phone" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "email" | trans }}</th>
+            <td>
+              <input type="text" class="form-control input-sm"  [(ngModel)]="resource.email" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "city" | trans }} *</th>
+            <td>
+              <select class="form-control input-sm"  [(ngModel)]="resource.city_id"  >
+                <option *ngFor="let item of cities" value="{{ item.id }}">{{ item.name }}</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "area" | trans }} *</th>
+            <td>
+              <select class="form-control input-sm"  [(ngModel)]="resource.area_id"  >
+                <ng-container *ngFor="let item of areas">
+                  <option *ngIf="item.city_id == resource.city_id" value="{{ item.id }}">{{ item.name }}</option>
+                </ng-container>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "ceo" | trans }}</th>
+            <td>
+              <input type="text" class="form-control input-sm"  [(ngModel)]="resource.ceo" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "fax" | trans }}</th>
+            <td>
+              <input type="text" class="form-control input-sm"  [(ngModel)]="resource.fax" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "commercial_number" | trans }}</th>
+            <td>
+              <input type="text" class="form-control input-sm"  [(ngModel)]="resource.commercial_number" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "commercial_photo" | trans }} </th>
+            <td>
+              <input type="file"
+              (change)="loadFile($event, 'commercial_photo', resource)"
+              class="form-control input-sm"  [(ngModel)]="resource.commercial_photo" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "notes" | trans }}</th>
+            <td>
+              <textarea  class="form-control input-sm"  [(ngModel)]="resource.notes" ></textarea>
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "active" | trans }} </th>
+            <td>
+              <mat-checkbox
+              #checkbox
+              (change)="resource.active = (checkbox.checked)? '1' : '0'"
+              [checked]="resource.active == '1'? true : false"
+              ></mat-checkbox>
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "show_dashboard" | trans }} </th>
+            <td>
+              <mat-checkbox
+              [(ngModel)]="resource.show_dashboard"
+              ></mat-checkbox>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="modal-footer text-center w3-center">
+
+          <button type="button"
+          class=""
+          style="margin: 5px"
+          mat-raised-button
+          data-dismiss="modal" >{{ "close" | trans }}</button>
+
+          <button class="w3-indigo"
+          [disabled]="isSubmit"
+          style="margin: 5px"
+          mat-raised-button
+          (click)="send(resource, true)" >
+          <span *ngIf="!isSubmit" >
+            <span *ngIf="!resource.id" >{{ "add" | trans }}</span>
+            <span *ngIf="resource.id" >{{ "edit" | trans }}</span>
+          </span>
+          <span *ngIf="isSubmit" class="fa fa-spin fa-spinner" ></span>
+        </button>
+
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

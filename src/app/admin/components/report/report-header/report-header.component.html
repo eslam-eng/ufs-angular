@@ -1,0 +1,17 @@
+
+<div class="w3-block w3-round" style="border: 2px dashed gray;padding: 5px" >
+  <table class="w3-table">
+      <tr style="text-align: right" >
+        <td  style="text-align: right" >
+            <b>{{ company.name }}</b> <br>
+            {{ company.address }} <br>
+            {{ company.city? company.city.name : '' }} <br>
+            {{ company.area? company.area.name : '' }} <br>
+            Tel: {{ company.phone }} <br>
+        </td>
+          <td style="width: 100px" >
+              <img src="/assets/img/logo.png" width="100px" >
+          </td>
+      </tr>
+  </table>
+</div>

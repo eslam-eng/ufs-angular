@@ -1,0 +1,4 @@
+<button [hidden]="isEnabled" [disabled]="isClicked"  class="btn btn-primary btn-user btn-block load-more-btn">
+  <span>Load More </span>
+  <img *ngIf="isClicked" src="assets/img/preloader-white.svg">
+</button>

@@ -1,0 +1,29 @@
+
+<div class="modal fade" id="colTable" >
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content modal-sm w3-animate-top">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center">{{ "table colmns" }}</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <tr *ngFor="let row of crud.fillable" >
+            <th>
+              {{ row.name }}
+            </th>
+            <td>
+              <mat-checkbox
+              [checked]="selectedCols.has(row.name)"
+              (change)="toggle(row.name)"
+              ></mat-checkbox>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{ "close" | trans }}</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

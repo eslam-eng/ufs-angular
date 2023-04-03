@@ -1,0 +1,86 @@
+.safe-box {
+  padding: 10px
+}
+
+.border-bottom-dashed {
+  border-bottom: 2px dashed gray!important;
+}
+
+.border-bottom-red {
+  border-bottom: 2px dashed red!important;
+}
+
+.border-dashed {
+  border: 2px dashed lightgray!important;
+}
+
+.btn-margin-bottom {
+  margin-bottom: 6px!important;
+}
+
+.custom-panel {
+  border: 2px dashed lightgray!important;
+  margin-bottom: 15px!important;
+}
+
+
+.custom-panel-title {
+  position: absolute!important;
+  right: 10px!important;
+  top: -13px!important;
+  width: auto!important;
+  background-color: white!important;
+  padding-left: 10px!important;
+  padding-right: 10px!important;
+}
+
+.custom-panel-body {
+  padding: 5px;
+}
+
+.small-shadow {
+  box-shadow: 0 1px 1px 0px rgba(0,0,0,0.3)!important;
+}
+
+.search-input {
+  min-width: 70%!important;
+}
+
+.border-gray {
+  border: 1px solid gray!important;
+}
+
+.custom-input {
+  min-width: 120px
+}
+
+.modal {
+  overflow: auto!important;
+}
+/*
+  custom button style
+*/
+
+select, input[type=file] {
+  padding: 0px!important;
+}
+
+.filter-top {
+  height: 200px!important;
+  overflow: auto;
+}
+
+.filter-side {
+  height: 400px!important;
+  overflow: auto;
+}
+
+
+.w3-ul li {
+  padding: 2px!important;
+  font-size: 12px!important;
+}
+
+.number_input {
+  width: 45px
+}

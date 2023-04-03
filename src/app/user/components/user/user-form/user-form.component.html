@@ -1,0 +1,141 @@
+
+<!-- form modal -->
+<div class="modal fade" id="userModal" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content light-gray w3-animate-top">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          <span *ngIf="isUpdate" >{{ "edit user" | trans }}</span>
+          <span *ngIf="!isUpdate" >{{ "add user" | trans }}</span>
+
+        </h4>
+      </div>
+      <div class="modal-body text-center">
+        <div class="w3-center">
+          <img src="{{ resource.photo_url }}" alt="" style="width: 100px;" class="w3-round" >
+        </div>
+        <br>
+        <table class="table">
+          <tr>
+            <th>{{ "photo" | trans }} </th>
+            <td>
+              <input type="file"
+              (change)="loadFile($event, 'photo', resource)"
+              class="form-control input-sm"  [(ngModel)]="resource.photo" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "name" | trans }} *</th>
+            <td>
+              <input type="text" class="form-control input-sm"  [(ngModel)]="resource.name" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "username" | trans }} *</th>
+            <td>
+              <input type="text" class="form-control input-sm"  [(ngModel)]="resource.username" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "password" | trans }} *</th>
+            <td>
+              <input type="password" class="form-control input-sm"  [(ngModel)]="resource.password" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "address" | trans }} *</th>
+            <td>
+              <input type="text" class="form-control input-sm"  [(ngModel)]="resource.address" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "phone" | trans }} *</th>
+            <td>
+              <input type="text" class="form-control input-sm"  [(ngModel)]="resource.phone" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "email" | trans }} *</th>
+            <td>
+              <input type="text" class="form-control input-sm"  [(ngModel)]="resource.email" >
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "company" | trans }} *</th>
+            <td>
+              <select class="form-control input-sm"  [(ngModel)]="resource.company_id"  >
+                <option *ngFor="let item of companies" value="{{ item.id }}">{{ item.name }}</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "branch" | trans }} *</th>
+            <td>
+              <select class="form-control input-sm"  [(ngModel)]="resource.branch_id"  >
+                <ng-container *ngFor="let item of branches">
+                  <option *ngIf="item.company_id == resource.company_id" value="{{ item.id }}">{{ item.name }}</option>
+                </ng-container>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "department" | trans }} *</th>
+            <td>
+              <select class="form-control input-sm"  [(ngModel)]="resource.department_id"  >
+                <ng-container *ngFor="let item of departments">
+                  <option *ngIf="item.company_id == resource.company_id" value="{{ item.id }}">{{ item.name }}</option>
+                </ng-container>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "role" | trans }}</th>
+            <td>
+              <select class="form-control input-sm"  [(ngModel)]="resource.role_id"  >
+                <ng-container *ngFor="let item of roles">
+                  <option *ngIf="item.company_id == resource.company_id" value="{{ item.id }}">{{ item.name }}</option>
+                </ng-container>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "notes" | trans }}</th>
+            <td>
+              <textarea  class="form-control input-sm"  [(ngModel)]="resource.notes" ></textarea>
+            </td>
+          </tr>
+          <tr>
+            <th>{{ "active" | trans }} </th>
+            <td>
+              <mat-slide-toggle
+              [(ngModel)]="resource.active"
+              ></mat-slide-toggle>
+            </td>
+          </tr>
+
+        </table>
+      </div>
+      <div class="modal-footer text-center w3-center">
+
+          <button type="button"
+          class=""
+          style="margin: 5px"
+          mat-raised-button
+          data-dismiss="modal" >{{ "close" | trans }}</button>
+
+          <button class="w3-indigo"
+          [disabled]="isSubmit"
+          style="margin: 5px"
+          mat-raised-button
+          (click)="send(resource, true)" >
+          <span *ngIf="!isSubmit" >
+            <span *ngIf="!resource.id" >{{ "add" | trans }}</span>
+            <span *ngIf="resource.id" >{{ "edit" | trans }}</span>
+          </span>
+          <span *ngIf="isSubmit" class="fa fa-spin fa-spinner" ></span>
+        </button>
+
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

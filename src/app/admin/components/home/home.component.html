@@ -1,0 +1,92 @@
+<div class="w3-display-container"
+*ngIf="canShow" >
+
+  <div class="row">
+
+    <div class="col-lg-3 col-sm-4 col-xs-6" *ngFor="let item of stepers" >
+      <!-- small box -->
+      <div class="small-box {{ colors[item] }} material-shadow">
+        <div class="inner">
+          <div class="w3-xxlarge" >
+            <b>{{ counts[item] }}</b>
+          </div>
+
+          <div class="w3-xxlarge" >
+            <span *ngIf="loading" class="fa fa-spin fa-spinner" ></span>
+          </div>
+
+          <p class="w3-large text-capitalize" >{{ (item + " Awbs count") | trans }}</p>
+        </div>
+        <div class="icon w3-padding">
+          <i class="fa fa-truck w3-jumbo"></i>
+        </div>
+        <a href="#" routerLink="/awb" [queryParams]="{steper: item}" class="small-box-footer">{{ "more info" }} <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+
+
+  </div>
+  <br>
+  <div class="row">
+
+    <div class="col-lg-6 col-md-6">
+      <div class="box box-success">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ "Awb Status Count" | trans }}</h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+          </div>
+        </div>
+        <div class="box-body">
+          <div class="chart">
+            <google-chart
+            [title]="awbStatusChart.title"
+            [type]="awbStatusChart.type"
+            [data]="awbStatusChart.data"
+            [columnNames]="awbStatusChart.columnNames"
+            [options]="awbStatusChart.options">
+            </google-chart>
+          </div>
+        </div>
+        <!-- /.box-body -->
+      </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6">
+      <div class="box box-success">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ "Awb Collection" | trans }}</h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+          </div>
+        </div>
+        <div class="box-body">
+          <div class="chart">
+            <google-chart
+            [title]="awbCollectionChart.title"
+            [type]="awbCollectionChart.type"
+            [data]="awbCollectionChart.data"
+            [columnNames]="awbCollectionChart.columnNames"
+            [options]="awbCollectionChart.options">
+            </google-chart>
+          </div>
+        </div>
+        <!-- /.box-body -->
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<div class="w3-center w3-padding"
+*ngIf="!canShow"  >
+  <img src="/assets/img/h3.jpg"  alt="" style="width: 100%;margin: auto;border-radius: 5px;" >
+</div>

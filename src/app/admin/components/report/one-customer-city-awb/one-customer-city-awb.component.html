@@ -1,0 +1,117 @@
+<p>
+  customer-awb works!
+</p>
+<app-breadcrumb [breadcrumbList]="breadcrumbList" ></app-breadcrumb>
+<br>
+
+<div class=" safe-box w3-white w3-display-container w3-round w3-input">
+
+  <div class="row">
+
+    <div class="col-lg-12 col-md-12 col-sm-12">
+      <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+        <div class="custom-panel-title w3-light-gray w3-round" >{{ "filter data" | trans }}</div>
+          <div class="custom-panel-body row"  >
+
+
+            <div class="col-lg-4">
+              <label>{{ "company name" | trans }}</label>
+              <br>
+              <select
+              class="form-control input-sm w3-block"
+              (change)="loadChartData()"
+              style="border-radius: 8px;"
+                [(ngModel)]="filter.company_id" >
+                <option value="">{{ "select all" | trans }}</option>
+                <option *ngFor="let item of companies" value="{{ item.id }}">{{ item.name }}</option>
+              </select>
+            </div>
+
+            <div class="col-lg-4">
+              <label>{{ "date from" | trans }} </label>
+              <br>
+              <input
+              (change)="loadChartData()"
+                type="date" class="form-control input-sm w3-round"
+                [(ngModel)]="filter.date_from" >
+            </div>
+
+            <div class="col-lg-4">
+              <label>{{ "date to" | trans }} </label>
+              <br>
+              <input
+                (change)="loadChartData()"
+                type="date" class="form-control input-sm w3-round"
+                [(ngModel)]="filter.date_to" >
+            </div>
+
+
+          </div>
+      </div>
+    </div>
+  </div>
+
+
+  <app-report-options></app-report-options>
+
+  <div class="w3-block " id="printable" style="padding: 0px!important" >
+
+    <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+      <div class="custom-panel-title w3-light-gray w3-round" ></div>
+        <div class="custom-panel-body"  >
+
+          <app-report-header></app-report-header>
+
+          <div class="w3-xlarge w3-center">
+            {{ title | trans }}
+          </div>
+          <br>
+          <table class="table">
+            <tr>
+              <th>{{ "company name" | trans }}</th>
+              <td>{{ getSelectedCompany().name }}</td>
+            </tr>
+            <tr>
+              <th>{{ "company address" | trans }}</th>
+              <td>{{ getSelectedCompany().address }}</td>
+            </tr>
+            <tr>
+              <th>{{ "company phone" | trans }}</th>
+              <td>{{ getSelectedCompany().phone }}</td>
+            </tr>
+          </table>
+
+          <div class="chart w3-block text-center">
+            <google-chart
+            [title]="chartData.title"
+            [type]="chartData.type"
+            [data]="chartData.data"
+            [columnNames]="chartData.columnNames"
+            [options]="chartData.options">
+            </google-chart>
+          </div>
+          <table class="table table-bordered ">
+            <tr class="w3-indigo" >
+              <td>{{ "#" }}</td>
+              <td>{{ "company" | trans }}</td>
+              <td>{{ "awb count" | trans  }}</td>
+              <td>{{ "awb weight total" | trans  }}</td>
+              <td>{{ "awb pieces total" | trans  }}</td>
+            </tr>
+
+            <tr *ngFor="let row of response index as i" >
+              <td>{{ i + 1 }}</td>
+              <td>{{ row.name }}</td>
+              <td>{{ row.awb_count }}</td>
+              <td>{{ row.awb_weight }}</td>
+              <td>{{ row.awb_pieces }}</td>
+            </tr>
+          </table>
+
+        </div>
+    </div>
+
+  </div>
+
+
+</div>

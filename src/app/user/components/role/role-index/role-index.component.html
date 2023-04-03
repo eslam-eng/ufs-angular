@@ -1,0 +1,65 @@
+<app-breadcrumb [breadcrumbList]="breadcrumbList" *ngIf="!updateMode"></app-breadcrumb>
+
+<app-breadcrumb [breadcrumbList]="breadcrumbList2" *ngIf="updateMode" ></app-breadcrumb>
+
+<div class="box box-primary material-shadow w3-white table-responsive" *ngIf="!updateMode" >
+  <div class="box-header">
+    <button mat-raised-button color="primary" (click)="doc.jquery('#createModal').modal('show');" style="margin: 5px"  >
+      <span class="fa fa-plus" ></span> {{ "add" | trans }}
+    </button>
+  </div>
+
+  <br>
+
+</div>
+
+<div class="mat-elevation-z8 w3-white" style="padding: 7px" *ngIf="!updateMode" >
+  <input  class="form-control"
+  (keyup)="search($event.target.value)" placeholder="{{ 'search' | trans }}">
+  <br>
+  <table mat-table [dataSource]="dataSource" matSort  class="">
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="name" sticky>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ "name" | trans }}</th>
+        <td mat-cell *matCellDef="let element">
+          <span class="w3-margin-right">
+              {{element.name}}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
+          <td mat-cell *matCellDef="let element">
+              <button mat-button color="info"  (click)="edit(element)" >
+                <i class="fa fa-edit"></i>
+              </button>
+              <button mat-button color="info"  (click)="permission(element)" >
+                <i class="fa fa-th-list"></i>
+              </button>
+              <button mat-button color="warn" *ngIf="element.can_delete" (click)="destroy(element.id)" >
+                <i class="fa fa-trash"></i>
+              </button>
+          </td>
+     </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
+
+<div class="w3-white" *ngIf="updateMode" >
+  <button (click)="updateMode=false" class="w3-white shadow w3-margin w3-large btn"  >
+    <i class="fa fa-angle-right" ></i> {{ "back" | trans }}
+ </button>
+  <app-permissions [role]="permissionItem" [updateMode]="updateMode" [loadResources]="updateResources" ></app-permissions>
+</div>
+
+
+  <app-role-form [updateResources]="updateResources" [resource]="updateItem" [isUpdate]="true" ></app-role-form>
+  <app-role-form [updateResources]="updateResources" [resource]="{}" [isUpdate]="false" ></app-role-form>
+

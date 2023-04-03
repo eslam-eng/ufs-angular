@@ -1,0 +1,238 @@
+
+      <div class="row">
+        <div class="col-md-3">
+
+          <!-- Profile Image -->
+          <div class="box box-primary">
+            <div class="box-body box-profile">
+              <img class="profile-user-img img-responsive img-circle" [src]="user.image_url" alt="User profile picture">
+
+              <h3 class="profile-username text-center">{{ user.name }}</h3>
+
+              
+              <p class="text-muted text-center">{{ user.role_id }}</p>
+ 
+              <ul class="list-group list-group-unbordered">  
+                <li class="list-group-item w3-display-container">
+                  <b class="">
+                      <input 
+                      type="file"
+                      (change)="viewPersonalImage($event)" 
+                      accept="image/x-png,image/gif,image/jpeg"  >
+                    </b> 
+                    <a class="w3-display-topleft">  
+                        <button mat-icon-button color="warn" [disabled]="changeSettingLoad" (click)="chanageProfileImage()" >
+                            <i *ngIf="!changeSettingLoad" class="fa fa-send-o" > </i>
+                            <i *ngIf="changeSettingLoad" class="fa fa-spin fa-spinner" ></i>
+                          </button>   
+                    </a>
+                </li>  
+
+              </ul>
+
+              <a href="#" class="btn btn-primary btn-block hidden"><b>Follow</b></a>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+ 
+          <!-- About Me Box -->
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">{{ "personal info" | trans }}</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <strong><i class="fa fa-book margin-r-5"></i> {{ "name" | trans }}</strong> 
+              <p class="text-muted">
+                {{ user.name }}
+              </p>
+
+              <hr>
+ 
+              <strong><i class="fa fa-envelope margin-r-5"></i> {{ "email" | trans  }}</strong> 
+              <p class="text-muted">
+                <a [href]="'mailto:' + user.email">{{ user.email }}</a>  
+              </p>
+
+              <hr>
+               
+              <strong><i class="fa fa-book margin-r-5"></i> {{ "username" | trans }}</strong> 
+              <p class="text-muted">
+                {{ user.username }}
+              </p>
+
+              <hr>
+               
+              <strong><i class="fa fa-book margin-r-5"></i> {{ "phone" | trans }}</strong> 
+              <p class="text-muted">
+                {{ user.phone }}
+              </p>
+
+              <hr>
+
+
+              
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#activity" data-toggle="tab">{{ "Activities" | trans }}</a></li>
+              <li class="" ><a href="#loginHistory" data-toggle="tab">{{ "login history" | trans }}</a></li> 
+              <li><a href="#timeline" data-toggle="tab">{{ "setting" | trans }}</a></li> 
+               
+              <li><a href="#password" data-toggle="tab">{{ "change password" | trans }}</a></li>   
+            </ul>
+            <div class="tab-content">
+              <div class="active tab-pane" id="activity"> 
+                <!-- The timeline -->
+             <ul class="timeline timeline-inverse">
+               <!-- timeline time label -->
+               
+                
+               <ng-container *ngFor="let item of profile.notifications" > 
+                <li class="time-label text-left">
+                      <span class="bg-red">
+                        {{ item.created_at | date: 'yyyy/m/d' }}
+                      </span>
+                </li> 
+                <!-- timeline item -->
+                <li>
+                  <i class="{{ item.icon }}"></i>
+ 
+                  <div class="timeline-item">
+                    <span class="time"><i class="fa fa-clock-o"></i> {{ item.created_at | date: 'yyyy/m/d' }}</span>
+ 
+                    <h3 class="timeline-header"><a href="#">{{ item.title }}</a></h3>
+ 
+                    <div class="timeline-body">
+                     {{ item.body }}
+                    </div> 
+                  </div>
+                </li>
+                
+                   
+               </ng-container>
+                
+              
+             </ul>
+              </div> 
+              <!-- /.tab-pane -->
+
+              
+          <div class="tab-pane  w3-white" id="loginHistory"> 
+              <input class="form-control input-sm" (keyup)="applyFilter($event.target.value)" placeholder="{{ 'search' | trans }}"> 
+                
+              <table mat-table [dataSource]="dataSource" matSort  class="">
+      
+                  <!-- Position Column -->
+                  <ng-container matColumnDef="created_at"  >
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ "datetime" | trans }}</th>
+                    <td mat-cell *matCellDef="let element"> 
+                       <span class="w3-margin-right">
+                          {{element.created_at | date:'yyyy/m/d h:i:s'}} 
+                      </span>
+                    </td>
+                  </ng-container>
+                    
+                  <!-- Position Column -->
+                  <ng-container matColumnDef="ip">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ "ip" | trans }}</th>
+                      <td mat-cell *matCellDef="let element">  
+                        {{element.ip}} 
+                      </td>
+                 </ng-container>
+                   
+                  <!-- Position Column -->
+                  <ng-container matColumnDef="phone_details">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ "phone_details" | trans }}</th>
+                      <td mat-cell *matCellDef="let element">  
+                        <div [innerHTML]="element.phone_details" > </div> 
+                      </td>
+                 </ng-container>
+                  
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  
+            </div>
+ 
+            <div class="tab-pane" id="password">
+                <!-- The timeline -->   
+                    <div class="form-group has-feedback">
+                        <label>{{ 'old password' | trans }}</label>
+                        <input required="" type="password" name="old_password" [(ngModel)]="passwords.old_password" autocomplete="off"  class="form-control" placeholder="{{ 'password' | trans }}">
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label>{{ 'new password' | trans }}</label>
+                        <input required="" type="password" name="new_password" [(ngModel)]="passwords.new_password"  autocomplete="off" class="form-control" placeholder="{{ 'confirm password' | trans }}">
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label>{{ 'confirm password' | trans }}</label>
+                        <input required="" type="password" name="confirm_password" [(ngModel)]="passwords.confirm_password"   autocomplete="off" class="form-control" placeholder="{{ 'confirm password' | trans }}">
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    </div>
+                    <br>
+                    <div class="">
+                        <!-- /.col -->
+                        <div class="form-group">
+                            <button mat-raised-button color="primary" [disabled]="changePasswordLoad" (click)="changePassword()" >
+                              <i *ngIf="!changePasswordLoad">{{ 'submit' | trans }}</i>
+                              <i *ngIf="changePasswordLoad" class="fa fa-spin fa-spinner" ></i>
+                            </button> 
+                        </div>
+                        <!-- /.col -->
+                    </div> 
+              </div>
+
+              <div class="tab-pane" id="timeline">
+                  <!-- The timeline --> 
+                    
+                      <div class="form-group has-feedback">
+                          <label>{{ 'name' | trans }}</label>
+                          <input type="text" class="form-control" [(ngModel)]="user.name" placeholder="{{ 'name' | trans }}"> 
+                      </div>   
+                    
+                      <div class="form-group has-feedback">
+                          <label>{{ 'phone' | trans }}</label>
+                          <input type="text" class="form-control" [(ngModel)]="user.phone" placeholder="{{ 'name' | trans }}"> 
+                      </div>   
+                        
+                      <br>
+                      <div class="">
+                          <!-- /.col -->
+                        <div class="form-group">
+                            <button mat-raised-button color="primary" [disabled]="changeSettingLoad" (click)="chanageProfile()" >
+                              <i *ngIf="!changeSettingLoad">{{ 'submit' | trans }}</i>
+                              <i *ngIf="changeSettingLoad" class="fa fa-spin fa-spinner" ></i>
+                            </button> 
+                        </div>
+                          <!-- /.col -->
+                      </div> 
+                </div>
+                <!-- /.tab-pane -->
+   
+
+
+            </div>
+            <!-- /.tab-content -->
+          </div>
+
+
+
+
+
+
+          <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+      </div>

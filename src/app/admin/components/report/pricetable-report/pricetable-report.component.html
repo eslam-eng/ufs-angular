@@ -1,0 +1,87 @@
+<app-breadcrumb [breadcrumbList]="breadcrumbList" ></app-breadcrumb>
+<br>
+
+<div class=" safe-box w3-white w3-display-container w3-round w3-input">
+
+  <div class="row">
+
+    <div class="col-lg-12 col-md-12 col-sm-12">
+      <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+        <div class="custom-panel-title w3-light-gray w3-round" >{{ "enter courier sheet code" | trans }}</div>
+          <div class="custom-panel-body row"  >
+
+            <div class="col-lg-4">
+              <label>{{ "company" | trans }}</label>
+              <br>
+              <select
+              class="form-control input-sm w3-block"
+              (change)="get()"
+              style="border-radius: 8px;"
+                [(ngModel)]="filter.company_id" >
+                <option value="">{{ "select all" | trans }}</option>
+                <option *ngFor="let item of companies" value="{{ item.id }}">{{ item.name }}</option>
+              </select>
+            </div>
+
+            <div class="col-lg-4">
+              <label>{{ "city_from" | trans }}</label>
+              <br>
+              <select
+              class="form-control input-sm w3-block"
+              (change)="get()"
+              style="border-radius: 8px;"
+                [(ngModel)]="filter.city_from" >
+                <option value="">{{ "select all" | trans }}</option>
+                <option *ngFor="let item of cities" value="{{ item.id }}">{{ item.name }}</option>
+              </select>
+            </div>
+
+            <div class="col-lg-4">
+              <label>{{ "city_to" | trans }}</label>
+              <br>
+              <select
+              class="form-control input-sm w3-block"
+              (change)="get()"
+              style="border-radius: 8px;"
+                [(ngModel)]="filter.city_to" >
+                <option value="">{{ "select all" | trans }}</option>
+                <option *ngFor="let item of cities" value="{{ item.id }}">{{ item.name }}</option>
+              </select>
+            </div>
+
+
+
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="w3-block " style="padding: 0px!important" >
+
+    <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+      <div class="custom-panel-title w3-light-gray w3-round" >{{ "options" | trans }}</div>
+        <div class="custom-panel-body"  >
+          <button mat-raised-button class="w3-indigo" (click)="print()" >{{ "print" | trans }}</button>
+        </div>
+    </div>
+
+  </div>
+
+  <div class="w3-block " style="padding: 0px!important" >
+
+    <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+      <div class="custom-panel-title w3-light-gray w3-round" >{{ "print table" | trans }}</div>
+        <div class="custom-panel-body"  >
+
+          <div class="data" [innerHTML]="html"  >
+
+          </div>
+
+
+        </div>
+    </div>
+
+  </div>
+
+
+</div>

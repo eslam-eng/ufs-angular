@@ -1,0 +1,174 @@
+<app-breadcrumb [breadcrumbList]="breadcrumbList" ></app-breadcrumb>
+<br>
+
+<div class=" safe-box w3-white w3-display-container w3-round w3-input">
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+        <div class="custom-panel-title w3-light-gray w3-round" >{{ "sheet info" | trans }}</div>
+        <div class="custom-panel-body row"  >
+
+          <div class="col-lg-12">
+            <label>{{ "date" | trans }} *</label>
+            <input type="date" class="form-control input-sm w3-round" [(ngModel)]="resource.date" >
+          </div>
+
+          <div class="col-lg-12">
+            <label>{{ "courier" | trans }} *</label>
+            <select  class="form-control input-sm w3-round" [(ngModel)]="resource.courier_id" >
+              <option *ngFor="let row of couriers" value="{{ row.id }}">{{ row.name }}</option>
+            </select>
+          </div>
+
+          <div class="col-lg-12">
+            <label>{{ "notes" | trans }}</label>
+            <textarea class="form-control input-sm w3-round" [(ngModel)]="resource.notes" ></textarea>
+          </div>
+
+          <div class="col-lg-12 col-md-12">
+            <br>
+            <button
+             mat-raised-button
+             class="w3-indigo w3-block"
+             [disabled]="isSubmit"
+            (click)="send(resource)" >
+            <span *ngIf="!isSubmit" >{{ "save courier sheet" | trans }}</span>
+            <span *ngIf="isSubmit" class="fa fa-spin fa-spinner" ></span>
+          </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+        <div class="custom-panel-title w3-light-gray w3-round" >{{ "search about awb" | trans }}</div>
+        <div class="custom-panel-body row"  >
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "company" | trans }}</label>
+            <select  class="form-control input-sm w3-round" (change)="loadAwbs()" [(ngModel)]="resource.company_id" >
+              <option *ngFor="let row of companies" value="{{ row.id }}">{{ row.name }}</option>
+            </select>
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "branch" | trans }}</label>
+            <select  class="form-control input-sm w3-round" (change)="loadAwbs()" [(ngModel)]="resource.branch_id" >
+              <ng-container *ngFor="let row of branches">
+                <option *ngIf="row.company_id == resource.company_id" value="{{ row.id }}">{{ row.name }}</option>
+              </ng-container>
+            </select>
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "department" | trans }}</label>
+            <select  class="form-control input-sm w3-round" (change)="loadAwbs()" [(ngModel)]="resource.department_id" >
+              <ng-container *ngFor="let row of departments">
+                <option *ngIf="row.company_id == resource.company_id" value="{{ row.id }}">{{ row.name }}</option>
+              </ng-container>
+            </select>
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "awb code" | trans }}</label>
+            <input type="text"
+            class="form-control input-sm w3-round"
+            (keyup.enter)="setAwb()"
+            (change)="loadAwbs()"
+            (keypress)="loadAwbs()" [(ngModel)]="resource.code" >
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "city" | trans }}</label>
+            <select  class="form-control input-sm w3-round" (change)="loadAwbs()" [(ngModel)]="resource.city_id" >
+              <option *ngFor="let row of cities" value="{{ row.id }}">{{ row.name }}</option>
+            </select>
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "area" | trans }}</label>
+            <select  class="form-control input-sm w3-round" (change)="loadAwbs()" [(ngModel)]="resource.area_id" >
+              <ng-container *ngFor="let row of areas">
+                <option *ngIf="row.city_id == resource.city_id" value="{{ row.id }}">{{ row.name }}</option>
+              </ng-container>
+            </select>
+          </div>
+
+          <div class="col-lg-12 col-md-12">
+            <label>{{ "awbs" | trans }}</label>
+            <select  class="form-control input-sm w3-round" (change)="loadAwbs()" [(ngModel)]="resource.awb_id" >
+              <ng-container *ngFor="let row of awbsHashTable.getAll()">
+                <option *ngIf="!selectedAwb.has(row.id)" value="{{ row.id }}">{{ row.code }} - {{ row.company? row.company.name : '' }}</option>
+              </ng-container>
+            </select>
+          </div>
+
+          <div class="col-lg-12 col-md-12">
+            <br>
+            <button mat-raised-button class="w3-green" (click)="addAwb()" >{{ "add" | trans }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="w3-block " style="padding: 0px!important" >
+
+    <div  class=" form-inline" *ngIf="selectedResources.size() > 0 && resource.id && canTransfer" >
+      <input
+        type="text"
+        [(ngModel)]="distinationSheet"
+        class=" form-control form-inline"
+        style="margin: 5px"
+        placeholder="{{ 'sheet number' | trans }}" >
+
+      <button mat-raised-button class="w3-indigo" (click)="transfer()" >
+        <span *ngIf="!isTransferSubmit" >{{ "move to another courier sheet" | trans }}</span>
+        <span *ngIf="isTransferSubmit" class="fa fa-spin fa-spinner" ></span>
+      </button>
+    </div>
+    <div class="table-responsive">
+      <table class="table">
+        <tr>
+          <th></th>
+          <th>#</th>
+          <th>{{ "code" | trans }}</th>
+          <th>{{ "date" | trans }}</th>
+          <th>{{ "company" | trans }}</th>
+          <th>{{ "department" | trans }}</th>
+          <th>{{ "branch" | trans }}</th>
+          <th>{{ "receiver" | trans }}</th>
+          <th>{{ "payment type" | trans }}</th>
+          <th>{{ "service" | trans }}</th>
+          <th>{{ "status" | trans }}</th>
+          <th>{{ "city" | trans }}</th>
+          <th>{{ "area" | trans }}</th>
+          <th>{{ "remove" | trans }}</th>
+        </tr>
+
+        <tr *ngFor="let row of selectedAwb.getAll() index as i" >
+          <td>
+            <mat-checkbox [checked]="selectedResources.has(row.id)" (change)="toggleAwb(row)" ></mat-checkbox>
+          </td>
+          <td>{{ i + 1 }}</td>
+          <td>{{ row.code }}</td>
+          <td>{{ row.date }}</td>
+          <td>{{ row.company? row.company.name : '' }}</td>
+          <td>{{ row.department? row.department.name : '' }}</td>
+          <td>{{ row.branch? row.branch.name : '' }}</td>
+          <td>{{ row.receiver? row.receiver.name : '' }}</td>
+          <td>{{ row.payment_type? row.payment_type.name : '' }}</td>
+          <td>{{ row.service? row.service.name : '' }}</td>
+          <td>{{ row.status? row.status.name : '' }}</td>
+          <td>{{ row.city? row.city.name : '' }}</td>
+          <td>{{ row.area? row.area.name : '' }}</td>
+          <td>
+              <i class="fa fa-trash btn" (click)="remove(row, i)" ></i>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+</div>

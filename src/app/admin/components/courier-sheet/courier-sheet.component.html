@@ -1,0 +1,71 @@
+<div class="col-lg-12 col-md-12  " style="padding: 0px!important">
+  <app-breadcrumb [breadcrumbList]="breadcrumbList" ></app-breadcrumb>
+
+  <div class="row filter" style="display: none;" >
+
+    <div class="col-lg-3 col-md-3">
+      <label>{{ 'date from' | trans }}</label>
+      <br>
+      <input type="date"
+      [(ngModel)]="filter.date_from"
+      (change)="get()"
+      class="form-control input-sm w3-block"
+      style="border-radius: 8px;"
+      placeholder="{{ 'date from' | trans }}" >
+    </div>
+
+    <div class="col-lg-3 col-md-3">
+      <label>{{ 'date to' | trans }}</label>
+      <br>
+      <input type="date"
+      [(ngModel)]="filter.date_to"
+      (change)="get()"
+      class="app-form w3-round input-sm w3-block"
+      placeholder="{{ 'date to' | trans }}" >
+    </div>
+
+
+    <div class="col-lg-3 col-md-3">
+      <label>{{ 'filter by courier' | trans }}</label>
+      <br>
+      <select
+      class="app-form w3-round input-sm w3-block"
+      (change)="get()"
+        [(ngModel)]="filter.courier_id" >
+        <option value="">{{ "select all" | trans }}</option>
+        <option *ngFor="let item of couriers" value="{{ item.id }}">{{ item.name }}</option>
+      </select>
+    </div>
+
+    <div class="col-lg-3 col-md-3">
+      <label>{{ 'Pending Courier Sheet' | trans }}</label>
+      <br>
+      <select
+      class="app-form w3-round input-sm w3-block"
+      (change)="get()"
+        [(ngModel)]="filter.is_pending" >
+        <option value="">{{ "select all" | trans }}</option>
+        <option value="1">{{ "pending sheet" | trans }}</option>
+      </select>
+    </div>
+
+
+
+  </div>
+  <br>
+
+<div class="w3-block material-shadow safe-box w3-white w3-display-container" style="padding: 0px!important" >
+  <app-table [crud]="self" ></app-table>
+</div>
+
+<div class="w3-display-bottomright w3-padding" style="position: fixed;" >
+  <button mat-fab  class="w3-indigo" *ngIf="canAdd" (click)="create()" >
+    <i class="fa fa-plus"></i>
+  </button>
+</div>
+
+
+
+</div>
+
+

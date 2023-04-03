@@ -1,0 +1,135 @@
+
+<!-- form modal -->
+<div class="modal fade" id="courierModal" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content light- w3-animate-top">
+      <div class="modal-header">
+        <h4 class="modal-title text-center w3-xlarge">
+          <span *ngIf="isUpdate" >{{ "edit courier" | trans }}</span>
+          <span *ngIf="!isUpdate" >{{ "add courier" | trans }}</span>
+
+        </h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 text-center" style="padding: 5px" >
+
+            <img
+            src="{{ resource.photo_url }}" alt=""
+            (click)="$(input).click()"
+            style="width: 100px;height: 100px;margin: auto;cursor: pointer;" class="w3-circle" >
+            <br>
+            <input type="file"
+            #input
+            (change)="loadFile($event, 'photo', resource)"
+            class="form-control input-sm hidden"  [(ngModel)]="resource.photo" >
+          </div>
+
+          <div class="col-lg-6 col-md-6" style="padding: 5px" >
+            <label for="">{{ "name" | trans }} *</label>
+            <input type="text" class="form-control input-sm"  [(ngModel)]="resource.name" >
+          </div>
+
+          <div class="col-lg-6 col-md-6" style="padding: 5px" >
+            <label for="">{{ "address" | trans }} *</label>
+            <input type="text" class="form-control input-sm"  [(ngModel)]="resource.address" >
+          </div>
+
+          <div class="col-lg-6 col-md-6" style="padding: 5px" >
+            <label for="">{{ "phone" | trans }} *</label>
+            <input type="text" class="form-control input-sm"  [(ngModel)]="resource.phone" >
+          </div>
+
+          <div class="col-lg-6 col-md-6" style="padding: 5px" >
+            <label for="">{{ "national_id" | trans }} *</label>
+            <input type="text" class="form-control input-sm"  [(ngModel)]="resource.national_id" >
+          </div>
+
+          <div class="col-lg-6 col-md-6" style="padding: 5px" >
+            <label for="">{{ "email" | trans }}</label>
+            <input type="text" class="form-control input-sm"  [(ngModel)]="resource.email" >
+          </div>
+
+          <div class="col-lg-6 col-md-6" style="padding: 5px" >
+            <label for="">{{ "company" | trans }} *</label>
+            <select class="form-control input-sm"  [(ngModel)]="resource.company_id"  >
+              <option *ngFor="let item of companies" value="{{ item.id }}">{{ item.name }}</option>
+            </select>
+          </div>
+
+          <div class="col-lg-6 col-md-6" style="padding: 5px" >
+            <label for="">{{ "branch" | trans }} *</label>
+            <select class="form-control input-sm"  [(ngModel)]="resource.branch_id"  >
+              <ng-container *ngFor="let item of branches">
+                <option *ngIf="item.company_id == resource.company_id" value="{{ item.id }}">{{ item.name }}</option>
+              </ng-container>
+            </select>
+          </div>
+
+          <div class="col-lg-6 col-md-6" style="padding: 5px" >
+            <label for="">{{ "department" | trans }} *</label>
+            <select class="form-control input-sm"  [(ngModel)]="resource.department_id"  >
+              <ng-container *ngFor="let item of departments">
+                <option *ngIf="item.company_id == resource.company_id" value="{{ item.id }}">{{ item.name }}</option>
+              </ng-container>
+            </select>
+          </div>
+
+          <div class="col-lg-6 col-md-6" style="padding: 5px" >
+            <label for="">{{ "insurance_num" | trans }}</label>
+            <input type="text" class="form-control input-sm"  [(ngModel)]="resource.insurance_num" >
+          </div>
+
+          <div class="col-lg-6 col-md-6" style="padding: 5px" >
+            <label for="">{{ "work_area" | trans }}</label>
+            <input type="text" class="form-control input-sm"  [(ngModel)]="resource.work_area" >
+          </div>
+
+          <div class="col-lg-6 col-md-6" style="padding: 5px" >
+            <label for="">{{ "salary" | trans }}</label>
+            <input type="text" class="form-control input-sm"  [(ngModel)]="resource.salary" >
+          </div>
+
+          <div class="col-lg-6 col-md-6" style="padding: 5px" >
+            <label for="">{{ "notes" | trans }}</label>
+            <textarea  class="form-control input-sm"  [(ngModel)]="resource.notes" ></textarea>
+          </div>
+
+          <div class="col-lg-6 col-md-6" style="padding: 5px" >
+            <label for="">{{ "active" | trans }}</label>
+            <br>
+            <mat-slide-toggle
+            [(ngModel)]="resource.active"
+            ></mat-slide-toggle>
+          </div>
+
+        </div>
+        <table class="table">
+
+
+        </table>
+      </div>
+      <div class="modal-footer text-center w3-center">
+
+          <button type="button"
+          class=""
+          style="margin: 5px"
+          mat-raised-button
+          data-dismiss="modal" >{{ "close" | trans }}</button>
+
+          <button class="w3-indigo"
+          [disabled]="isSubmit"
+          style="margin: 5px"
+          mat-raised-button
+          (click)="send(resource, true)" >
+          <span *ngIf="!isSubmit" >
+            <span *ngIf="!resource.id" >{{ "add" | trans }}</span>
+            <span *ngIf="resource.id" >{{ "edit" | trans }}</span>
+          </span>
+          <span *ngIf="isSubmit" class="fa fa-spin fa-spinner" ></span>
+        </button>
+
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

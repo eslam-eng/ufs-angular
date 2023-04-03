@@ -1,0 +1,67 @@
+
+<div class="modal fade" tabindex="-1" role="dialog" id="printModal" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{ "print selected awbs" | trans }}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="w3-row">
+
+          <div class="w3-col l2 m2 s3 w3-xlarge w3-center" >
+            <button class="w3-button" (click)="printA4()" >
+              <i class="fa fa-print w3-text-indigo"></i>
+              <br>
+              <b>{{ "A4" | trans }}</b>
+            </button>
+          </div>
+
+          <div class="w3-col l2 m2 s3 w3-xlarge w3-center" >
+            <button class="w3-button" (click)="print1x3()" >
+              <i class="fa fa-print w3-text-indigo"></i>
+              <br>
+              <b>{{ "1x3" | trans }}</b>
+            </button>
+          </div>
+
+          <div class="w3-col l2 m2 s3 w3-xlarge w3-center" >
+            <button class="w3-button" (click)="print3x7()" >
+              <i class="fa fa-print w3-text-indigo"></i>
+              <br>
+              <b>{{ "3x7" | trans }}</b>
+            </button>
+          </div>
+
+          <div class="w3-col l2 m2 s3 w3-xlarge w3-center" >
+            <button class="w3-button" (click)="print3x8()" >
+              <i class="fa fa-print w3-text-indigo"></i>
+              <br>
+              <b>{{ "3x8" | trans }}</b>
+            </button>
+          </div>
+
+          <div class="w3-col l2 m2 s3 w3-xlarge w3-center" >
+            <button class="w3-button" (click)="print3x9()" >
+              <i class="fa fa-print w3-text-indigo"></i>
+              <br>
+              <b>{{ "3x9" | trans }}</b>
+            </button>
+          </div>
+
+          <div class="w3-col l2 m2 s3 w3-xlarge w3-center" >
+            <button class="w3-button" (click)="print3x10()" >
+              <i class="fa fa-print w3-text-indigo"></i>
+              <br>
+              <b>{{ "3x10" | trans }}</b>
+            </button>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" mat-raised-button data-dismiss="modal" (click)="$('#printModal').modal('hide')" >{{ "close" | trans }}</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -1,0 +1,301 @@
+<div class="col-lg-12 col-md-12  " style="padding: 0px!important">
+  <app-breadcrumb [breadcrumbList]="breadcrumbList" ></app-breadcrumb>
+
+
+  <div class="row">
+
+    <div class="col-lg-4 hidden">
+      <label>{{ 'search' | trans }}</label>
+      <br>
+      <input type="text"
+      [(ngModel)]="filter.search"
+      class="app-form input-sm w3-block"
+      placeholder="{{ 'search' | trans }}" >
+    </div>
+
+    <div class="col-lg-4">
+      <label>{{ 'filter with company' | trans }}</label>
+      <br>
+      <select
+      (change)="get(true)"
+      class="app-form input-sm w3-block"
+        [(ngModel)]="filter.model_id" >
+        <option *ngFor="let row of companies" value="{{ row.id }}">{{ row.name }}</option>
+      </select>
+    </div>
+
+    <div class="col-lg-4">
+      <label>{{ 'city_from' | trans }}</label>
+      <br>
+      <select
+      (change)="get(true)"
+      class="app-form input-sm w3-block"
+        [(ngModel)]="filter.city_from" >
+        <option value="">{{ "select all" | trans }}</option>
+        <option *ngFor="let row of cities" value="{{ row.id }}">{{ row.name }}</option>
+      </select>
+    </div>
+
+    <div class="col-lg-4">
+      <label>{{ 'city_to' | trans }}</label>
+      <br>
+      <select
+      (change)="get(true)"
+      class="app-form input-sm w3-block"
+        [(ngModel)]="filter.city_to" >
+        <option value="">{{ "select all" | trans }}</option>
+        <option *ngFor="let row of cities" value="{{ row.id }}">{{ row.name }}</option>
+      </select>
+    </div>
+  </div>
+  <br>
+
+<div class="w3-block material-shadow safe-box w3-white w3-display-container" style="padding: 0px!important" >
+  <div class="w3-block w3-padding w3-display-topright"   >
+    <button
+    style="margin: 5px;padding: 7px"
+      class="w3-round w3-button material-shadow btn-sm w3-red"
+      (click)="removeSelected()"
+      *ngIf="canRemove && selectedResources.size() > 0"  >
+      {{ "remove selected" | trans }} <i class="fa fa-trash"></i>
+    </button>
+
+    <button
+    style="margin: 5px;padding: 7px"
+    (click)="excel()"
+      class="w3-round w3-button material-shadow btn-sm w3-green"  >
+      {{ "excel" | trans }} <i class="fa fa-file-excel-o"></i>
+    </button>
+
+    <button
+    style="margin: 5px;padding: 7px"
+    (click)="pdf()"
+      class="w3-round w3-button material-shadow btn-sm w3-orange"  >
+      {{ "pdf" | trans }} <i class="fa fa-file-pdf-o"></i>
+    </button>
+
+    <button
+    style="margin: 5px;padding: 7px"
+    (click)="print()"
+      class="w3-round w3-button material-shadow btn-sm w3-dark-gray"  >
+      {{ "print" | trans }} <i class="fa fa-print"></i>
+    </button>
+
+
+    <button
+    style="margin: 5px;padding: 7px"
+    (click)="import()"
+      class="w3-round w3-button material-shadow btn-sm w3-green"  >
+      {{ "import from excel" | trans }} <i class="fa fa-upload"></i>
+    </button>
+
+    <button
+    style="margin: 5px;padding: 7px"
+    (click)="filter.show_offer=0;get(true)"
+      class="w3-round w3-button material-shadow btn-sm w3-cyan"  >
+      {{ "reload" | trans }} <i class="fa fa-refresh"></i>
+    </button>
+
+
+
+
+    <button
+    style="margin: 5px;padding: 7px"
+    (click)="this.create()"
+    *ngIf="canAdd"
+      class="w3-round w3-button material-shadow btn-sm w3-indigo"   >
+      <i class="fa fa-plus"></i> {{ "add" | trans }}
+    </button>
+  </div>
+
+  <div class="w3-display-topright w3-padding">
+
+    <button
+    style="margin: 5px;padding: 7px"
+    (click)="$('#colTable').modal('show')"
+      class="w3-round w3-button material-shadow btn-sm w3-teal"   >
+      <i class="fa fa-filter"></i> {{ "toggle cols" | trans }}
+    </button>
+
+    <button
+    style="margin: 5px;padding: 7px"
+    (click)="offers()"
+      class="w3-round w3-button material-shadow btn-sm w3-pink"  >
+      {{ "offers" | trans }} <i class="fa fa-trophy"></i>
+    </button>
+  </div>
+
+  <div class="text-center w3-padding">
+    <b>
+      {{ title | trans }}
+    </b>
+    <br>
+    <br>
+  </div>
+
+  <div class="table-responsive" style="height: 350px;" >
+    <table class="excel-table table-bordered text-center text-center" id="printable" >
+
+      <tr class="w3-light-gray" >
+        <th class="w3-padding" >
+          <mat-checkbox
+            [checked]="selectedAllToggle"
+            (change)="selectAll()"
+          ></mat-checkbox>
+        </th>
+        <th class="w3-padding" *ngIf="selectedCols.has('id')" >{{ "id" | trans }}</th>
+        <th class="w3-padding" *ngIf="selectedCols.has('date_to')" >{{ "date_to" | trans }}</th>
+        <th class="w3-padding" *ngIf="selectedCols.has('city_from')" >{{ "city_from" | trans }}</th>
+        <th class="w3-padding" *ngIf="selectedCols.has('area_from')" >{{ "area_from" | trans }}</th>
+        <th class="w3-padding" *ngIf="selectedCols.has('city_to')" >{{ "city_to" | trans }}</th>
+        <th class="w3-padding" *ngIf="selectedCols.has('area_to')" >{{ "area_to" | trans }}</th>
+        <th class="w3-padding" *ngIf="selectedCols.has('price')" >{{ "price" | trans }}</th>
+        <th class="w3-padding" *ngIf="selectedCols.has('return_price')" >{{ "return_price" | trans }}</th>
+        <th class="w3-padding" *ngIf="selectedCols.has('basic_kg')" >{{ "basic_kg" | trans }}</th>
+        <th class="w3-padding" *ngIf="selectedCols.has('additional_kg_price')" >{{ "additional_kg_price" | trans }}</th>
+        <th class="w3-padding" *ngIf="selectedCols.has('remove')" >{{ "remove"| trans }}</th>
+      </tr>
+      <tr *ngIf="loading"  >
+        <td class="w3-text-indigo text-center" colspan="3" >
+          <i class="fa fa-spin fa-spinner"></i>
+        </td>
+      </tr>
+      <ng-container *ngFor="let item of data index as i" >
+        <tr  *ngIf="!loading && search(item)"
+        class="{{ this.selectedResources.has(item.id)? 'w3-pale-red' : '' }}" >
+          <td>
+            <div class="w3-center text-center hidden" >
+              <mat-slide-toggle
+              [checked]="selectedResources.has(item.id)"
+              (change)="toggle(item)"
+              ></mat-slide-toggle>
+            </div>
+            <mat-checkbox
+            [checked]="selectedResources.has(item.id)"
+            (change)="toggle(item)"></mat-checkbox>
+          </td>
+          <td class="{{ item.date_to? 'w3-green' : '' }}" *ngIf="selectedCols.has('id')"  >
+            <span  class="{{ item.date_to? 'w3-badge w3-white' : '' }}" >{{ item.id }}</span>
+          </td>
+          <td  *ngIf="selectedCols.has('date_to')"  >
+            <input
+            type="date"
+            style="min-width: 200px;"
+            class="w3-block w3-border-0 text-center"
+            (change)="send(item)"
+            [readOnly]="item.id && !canEdit || !item.id && !canAdd"
+            [(ngModel)]="item.date_to" >
+            <span style="display: none;" >{{ item.date_to }}</span>
+          </td>
+          <td *ngIf="selectedCols.has('city_from')" >
+            <select
+              style="min-width: 200px;"
+              class="w3-block w3-border-0 text-center"
+              (change)="send(item)"
+              [disabled]="item.id && !canEdit || !item.id && !canAdd"
+              [(ngModel)]="item.city_from" >
+              <option *ngFor="let row of cities" value="{{ row.id }}">{{ row.name }}</option>
+            </select>
+            <span style="display: none;" >{{ item.city_from_object? item.city_from_object.name : '' }}</span>
+          </td>
+          <td *ngIf="selectedCols.has('area_from')"  >
+            <select
+              style="min-width: 200px;"
+              class="w3-block w3-border-0 text-center"
+              (change)="send(item)"
+              [disabled]="item.id && !canEdit || !item.id && !canAdd"
+              [(ngModel)]="item.area_from" >
+              <option value="">{{ "all" | trans }}</option>
+              <ng-container *ngFor="let row of areas" >
+                <option *ngIf="row.city_id == item.city_from" value="{{ row.id }}">{{ row.name }}</option>
+              </ng-container>
+            </select>
+            <span style="display: none;" >{{ item.area_from_object? item.area_from_object.name : '' }}</span>
+          </td>
+          <td *ngIf="selectedCols.has('city_to')" >
+            <select
+              style="min-width: 200px;"
+              class="w3-block w3-border-0 text-center"
+              (change)="send(item)"
+              [disabled]="item.id && !canEdit || !item.id && !canAdd"
+              [(ngModel)]="item.city_to" >
+              <option *ngFor="let row of cities" value="{{ row.id }}">{{ row.name }}</option>
+            </select>
+            <span style="display: none;" >{{ item.city_to_object? item.city_to_object.name : '' }}</span>
+          </td>
+          <td *ngIf="selectedCols.has('area_to')"  >
+            <select
+              style="min-width: 200px;"
+              class="w3-block w3-border-0 text-center"
+              (change)="send(item)"
+              [disabled]="item.id && !canEdit || !item.id && !canAdd"
+              [(ngModel)]="item.area_to" >
+              <option value="">{{ "all" | trans }}</option>
+              <ng-container *ngFor="let row of areas" >
+                <option *ngIf="row.city_id == item.city_to" value="{{ row.id }}">{{ row.name }}</option>
+              </ng-container>
+            </select>
+            <span style="display: none;" >{{ item.area_to_object? item.area_to_object.name : '' }}</span>
+          </td>
+          <td *ngIf="selectedCols.has('price')" >
+            <input
+            type="number"
+            style="min-width: 200px;"
+            class="w3-block w3-border-0 text-center"
+            (change)="send(item)"
+            [readOnly]="item.id && !canEdit || !item.id && !canAdd"
+            [(ngModel)]="item.price" >
+            <span style="display: none;" >{{ item.price }}</span>
+          </td>
+          <td *ngIf="selectedCols.has('return_price')" >
+            <input
+            type="number"
+            style="min-width: 200px;"
+            class="w3-block w3-border-0 text-center"
+            (change)="send(item)"
+            [readOnly]="item.id && !canEdit || !item.id && !canAdd"
+            [(ngModel)]="item.return_price" >
+            <span style="display: none;" >{{ item.return_price }}</span>
+          </td>
+          <td *ngIf="selectedCols.has('basic_kg')" >
+            <input
+            type="number"
+            style="min-width: 200px;"
+            class="w3-block w3-border-0 text-center"
+            (change)="send(item)"
+            [readOnly]="item.id && !canEdit || !item.id && !canAdd"
+            [(ngModel)]="item.basic_kg" >
+            <span style="display: none;" >{{ item.basic_kg }}</span>
+          </td>
+          <td *ngIf="selectedCols.has('additional_kg_price')" >
+            <input
+            type="number"
+            style="min-width: 200px;"
+            class="w3-block w3-border-0 text-center"
+            (change)="send(item)"
+            [readOnly]="item.id && !canEdit || !item.id && !canAdd"
+            [(ngModel)]="item.additional_kg_price" >
+            <span style="display: none;" >{{ item.additional_kg_price }}</span>
+          </td>
+          <td *ngIf="selectedCols.has('remove')" >
+            <button
+            class="fa fa-trash w3-button"
+            *ngIf="canRemove && item.id"  (click)="destroy(item, i)" ></button>
+          </td>
+        </tr>
+      </ng-container>
+
+    </table>
+  </div>
+</div>
+<br>
+<button mat-raised-button  class="w3-indigo" *ngIf="canAdd" (click)="create()" >
+  <i class="fa fa-plus"></i>
+</button>
+
+</div>
+
+
+<app-toggle-col [crud]="self" [selectedCols]="selectedCols" ></app-toggle-col>
+
+<app-import-excel [title]="title" [templateUrl]="getExcelFileUrl()" [apiUrl]="getExcelFileApi()" [action]="reload" ></app-import-excel>

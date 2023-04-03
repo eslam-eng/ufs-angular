@@ -1,0 +1,364 @@
+<aside class="main-sidebar material-shadow">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar" style="height: auto;">
+        <!-- Sidebar user panel -->
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img [src]="user.photo_url" class="img-circle" alt="User Image">
+            </div>
+            <div class="pull-left info">
+                <p>{{ user.name }}</p>
+                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+            </div>
+        </div>
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu tree" data-widget="tree">
+            <li class="header">MAIN NAVIGATION</li>
+
+            <li permission="website_read" appAuth>
+                <a href="{{ website }}" target="_blank">
+                    <i class="fa fa-globe"></i> <span>{{ "to go website" | trans }}</span>
+                </a>
+            </li>
+
+            <li class=" treeview " _permission="awb_read">
+                <a href="#">
+                    <i class="fa fa-newspaper-o"></i> <span>{{ "awb" | trans }}</span>
+                    <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li permission="awb_add">
+                        <a routerLink="/awb-create" href="#">
+                            <i class="fa fa-angle-double-right"></i> {{ "prepare shipment" | trans }}
+                        </a>
+                    </li>
+                    <li permission="awb_read">
+                        <a href="#" routerLink="/awb">
+                            <i class="fa fa-angle-double-right"></i> {{ "awb" | trans }}
+                        </a>
+                    </li>
+                    <li permission="awb_change_status">
+                        <a href="#" routerLink="/awb-pod">
+                            <i class="fa fa-angle-double-right"></i> {{ "awb pod" | trans }}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" treeview " appAuth>
+                <a href="#">
+                    <i class="fa fa-calculator"></i> <span>{{ "accounting" | trans }}</span>
+                    <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li permission="price_table_read">
+                        <a href="#" routerLink="/price-table">
+                            <i class="fa fa-angle-double-right"></i> {{ "price table" | trans }}
+                        </a>
+                    </li>
+                    <li permission="out_receipt_read">
+                        <a href="#" routerLink="/out-receipt">
+                            <i class="fa fa-angle-double-right"></i> {{ "out receipt" | trans }}
+                        </a>
+                    </li>
+                    <li permission="in_receipt_read">
+                        <a href="#" routerLink="/in-receipt">
+                            <i class="fa fa-angle-double-right"></i> {{ "in receipt" | trans }}
+                        </a>
+                    </li>
+                    <li permission="update_account_courier_sheet">
+                        <a href="#" routerLink="/update-account-courier-sheet">
+                            <i class="fa fa-angle-double-right"></i> {{ "collect courier sheets" | trans }}
+                        </a>
+                    </li>
+                    <li permission="awb_customer_review">
+                        <a href="#" routerLink="/awb-customer-review">
+                            <i class="fa fa-angle-double-right"></i> {{ "awb customer review" | trans }}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li permission="pickup_read" appAuth>
+                <a href="#" routerLink="/pickup">
+                    <i class="fa fa-address-book"></i> <span>{{ "pickups" | trans }}</span>
+                </a>
+            </li>
+            <li class=" treeview " *ngIf="can(['courier_sheet_read', 'courier_read', 'courier_sheet_add'])">
+                <a href="#">
+                    <i class="fa fa-newspaper-o"></i> <span>{{ "courier sheets" | trans }}</span>
+                    <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li permission="courier_read">
+                        <a href="#" routerLink="/courier">
+                            <i class="fa fa-angle-double-right"></i> <span>{{ "couriers" | trans }}</span>
+                        </a>
+                    </li>
+                    <li permission="courier_sheet_add">
+                        <a href="#" routerLink="/courier-sheet-create">
+                            <i class="fa fa-angle-double-right"></i> {{ "add courier sheets" | trans }}
+                        </a>
+                    </li>
+                    <li permission="courier_sheet_read">
+                        <a href="#" routerLink="/courier-sheet">
+                            <i class="fa fa-angle-double-right"></i> {{ "courier sheets" | trans }}
+                        </a>
+                    </li>
+                    <li permission="update_courier_sheet">
+                        <a href="#" routerLink="/update-courier-sheet">
+                            <i class="fa fa-angle-double-right"></i> <span>{{ "update courier sheet" | trans }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" treeview " *ngIf="can(['company_read', 'receiver_read', 'company_branch_read'])">
+                <a href="#">
+                    <i class="fa fa-users"></i> <span>{{ "companies & receivers" | trans }}</span>
+                    <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li permission="company_read">
+                        <a href="#" routerLink="/company">
+                            <i class="fa fa-angle-double-right"></i> {{ "companies" | trans }}
+                        </a>
+                    </li>
+                    <li permission="company_branch_read">
+                        <a href="#" routerLink="/company-branch">
+                            <i class="fa fa-angle-double-right"></i> {{ "company branches" | trans }}
+                        </a>
+                    </li>
+                    <li permission="receiver_read">
+                        <a href="#" routerLink="/receiver">
+                            <i class="fa fa-angle-double-right"></i> {{ "receivers" | trans }}
+                        </a>
+                    </li>
+                    <li permission="department_read">
+                        <a href="#" routerLink="/settings/department">
+                            <i class="fa fa-angle-double-right"></i> {{ "departments" | trans }}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" treeview " *ngIf="can(['user_read', 'role_read', 'permission_group_read', 'permission_read'])">
+                <a href="#">
+                    <i class="fa fa-users"></i> <span>{{ "users & roles" | trans }}</span>
+                    <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li permission="user_read">
+                        <a href="#" routerLink="/users/user">
+                            <i class="fa fa-angle-double-right"></i> {{ "users" | trans }}
+                        </a>
+                    </li>
+                    <li permission="role_read">
+                        <a href="#" routerLink="/users/role">
+                            <i class="fa fa-angle-double-right"></i> {{ "roles" | trans }}
+                        </a>
+                    </li>
+                    <li permission="permission_group_read" *ngIf="user.company_id == 1">
+                        <a href="#" routerLink="/users/permission-group">
+                            <i class="fa fa-angle-double-right"></i> {{ "permission groups" | trans }}
+                        </a>
+                    </li>
+                    <li permission="permission_read" *ngIf="user.company_id == 1">
+                        <a href="#" routerLink="/users/permission">
+                            <i class="fa fa-angle-double-right"></i> {{ "permissions" | trans }}
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+            <li appAuth="admin" *ngIf="can(['country_read', 'city_read', 'area_read', 'service_read', 'payment_type_read', 'status_read', 'department_read', 'translation_read']) && user.company_id == 1" class=" treeview ">
+                <a href="#">
+                    <i class="fa fa-cogs"></i> <span>{{ "settings" | trans }}</span>
+                    <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li permission="courier_commission_read">
+                        <a href="#" routerLink="/settings/courier-commission">
+                            <i class="fa fa-angle-double-right"></i> {{ "courier commisions" | trans }}
+                        </a>
+                    </li>
+                    <li permission="courier_daily_read">
+                        <a href="#" routerLink="/settings/courier-daily">
+                            <i class="fa fa-angle-double-right"></i> {{ "courier dailies" | trans }}
+                        </a>
+                    </li>
+                    <li permission="country_read">
+                        <a href="#" routerLink="/settings/store">
+                            <i class="fa fa-angle-double-right"></i> {{ "stores" | trans }}
+                        </a>
+                    </li>
+                    <li permission="country_read">
+                        <a href="#" routerLink="/settings/expense-type">
+                            <i class="fa fa-angle-double-right"></i> {{ "expenses types" | trans }}
+                        </a>
+                    </li>
+                    <li permission="country_read">
+                        <a href="#" routerLink="/settings/awb-category">
+                            <i class="fa fa-angle-double-right"></i> {{ "awb categories" | trans }}
+                        </a>
+                    </li>
+                    <li permission="country_read">
+                        <a href="#" routerLink="/settings/country">
+                            <i class="fa fa-angle-double-right"></i> {{ "countries" | trans }}
+                        </a>
+                    </li>
+                    <li permission="city_read">
+                        <a href="#" routerLink="/settings/city">
+                            <i class="fa fa-angle-double-right"></i> {{ "cities" | trans }}
+                        </a>
+                    </li>
+                    <li permission="area_read">
+                        <a href="#" routerLink="/settings/area">
+                            <i class="fa fa-angle-double-right"></i> {{ "areas" | trans }}
+                        </a>
+                    </li>
+                    <li permission="service_read">
+                        <a href="#" routerLink="/settings/service">
+                            <i class="fa fa-angle-double-right"></i> {{ "services" | trans }}
+                        </a>
+                    </li>
+                    <li permission="payment_type_read">
+                        <a href="#" routerLink="/settings/payment-type">
+                            <i class="fa fa-angle-double-right"></i> {{ "payment types" | trans }}
+                        </a>
+                    </li>
+                    <li permission="status_read">
+                        <a href="#" routerLink="/settings/status">
+                            <i class="fa fa-angle-double-right"></i> {{ "status" | trans }}
+                        </a>
+                    </li>
+                    <li permission="trans_type_read">
+                        <a href="#" routerLink="/settings/trans-type">
+                            <i class="fa fa-angle-double-right"></i> {{ "trans types" | trans }}
+                        </a>
+                    </li>
+                    <li permission="translation_read">
+                        <a href="#" routerLink="/settings/translations">
+                            <i class="fa fa-angle-double-right"></i> {{ "translation" | trans }}
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+            <li class=" treeview " *ngIf="can(['report_awb_price'])">
+                <a href="#">
+                    <i class="fa fa-line-chart"></i> <span>{{ "Reports" | trans }}</span>
+                    <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li permission="report_awb_price">
+                        <a href="#" routerLink="/report/awb-prices">
+                            <i class="fa fa-angle-double-right"></i> {{ "awb prices" | trans }}
+                        </a>
+                    </li>
+                    <li permission="report_awb_price">
+                        <a href="#" routerLink="/report/invoice-cover">
+                            <i class="fa fa-angle-double-right"></i> {{ "invoice cover" | trans }}
+                        </a>
+                    </li>
+                    <li permission="report_awb_price">
+                        <a href="#" routerLink="/report/awb-prices2">
+                            <i class="fa fa-angle-double-right"></i> {{ "awb prices2" | trans }}
+                        </a>
+                    </li>
+                    <li permission="report_awb_price">
+                        <a href="#" routerLink="/report/awb-prices3">
+                            <i class="fa fa-angle-double-right"></i> {{ "postal invoices" | trans }}
+                        </a>
+                    </li>
+                    <li permission="report_store_transaction">
+                        <a href="#" routerLink="/report/store-transactions">
+                            <i class="fa fa-angle-double-right"></i> {{ "store transactions" | trans }}
+                        </a>
+                    </li>
+                    <li permission="report_customer_awb">
+                        <a href="#" routerLink="/report/customer-awb">
+                            <i class="fa fa-angle-double-right"></i> {{ "customers awb" | trans }}
+                        </a>
+                    </li>
+                    <li permission="report_one_customer_awb_status">
+                        <a href="#" routerLink="/report/one-customer-awb-status">
+                            <i class="fa fa-angle-double-right"></i> {{ "one_customer_awb_status" | trans }}
+                        </a>
+                    </li>
+                    <li permission="report_one_customer_awb_city">
+                        <a href="#" routerLink="/report/one-customer-awb-city">
+                            <i class="fa fa-angle-double-right"></i> {{ "one_customer_awb_city" | trans }}
+                        </a>
+                    </li>
+                    <li permission="one_courier_awb_status_report">
+                        <a href="#" routerLink="/report/one-courier-awb-status">
+                            <i class="fa fa-angle-double-right"></i> {{ "one_courier_awb_status" | trans }}
+                        </a>
+                    </li>
+                    <li permission="courier_commission_report">
+                        <a href="#" routerLink="/report/courier-commission">
+                            <i class="fa fa-angle-double-right"></i> {{ "courier commissions" | trans }}
+                        </a>
+                    </li>
+                    <li permission="pricetable_report">
+                        <a href="#" routerLink="/report/pricetable">
+                            <i class="fa fa-angle-double-right"></i> {{ "pricetable report" | trans }}
+                        </a>
+                    </li>
+
+
+                </ul>
+            </li>
+            <li class=" treeview " *ngIf="can(['read_mailbox', 'edit_website_about', 'edit_website_service'])">
+                <a href="#">
+                    <i class="fa fa-line-chart"></i> <span>{{ "Website" | trans }}</span>
+                    <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li permission="read_mailbox">
+                        <a href="#" routerLink="/mailbox">
+                            <i class="fa fa-angle-double-right"></i> {{ "mailbox" | trans }}
+                        </a>
+                    </li>
+                    <li permission="edit_website_about">
+                        <a href="#" routerLink="/website/about">
+                            <i class="fa fa-angle-double-right"></i> {{ "edit about us" | trans }}
+                        </a>
+                    </li>
+                    <!--
+          <li permission="edit_website_service" >
+            <a href="#" routerLink="/website/our-service" >
+              <i class="fa fa-angle-double-right"></i>
+              {{ "edit our services" | trans }}
+            </a>
+          </li>
+          -->
+
+
+
+                </ul>
+            </li>
+            <!--
+      <li>
+        <a href="#">
+          <i class="fa fa-th"></i> <span>new link</span>
+        </a>
+      </li>
+      -->
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>

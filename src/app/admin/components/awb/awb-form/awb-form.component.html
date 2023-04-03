@@ -1,0 +1,301 @@
+<app-breadcrumb [breadcrumbList]="breadcrumbList" ></app-breadcrumb>
+
+<div class="w3-block header-image">
+
+</div>
+<div class=" safe-box w3-white w3-display-container w3-round w3-input"  >
+  <div class="row">
+
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+        <div class="custom-panel-title w3-light-gray w3-round" >{{ "company info" | trans }}</div>
+        <div class="custom-panel-body row"  >
+
+
+          <div class="col-lg-12">
+            <label>{{ "company" | trans }} *</label>
+            <select (change)="changeListner(changeEnumType.COMPANY);resource.branch_id=null"
+            [disabled]="!user.isAdmin()"
+            class="form-control input-sm w3-round" [(ngModel)]="resource.company_id" >
+            <ng-container  *ngFor="let row of companies" >
+              <option *ngIf="row.active == '1'" value="{{ row.id }}">{{ row.name }}</option>
+            </ng-container>
+            </select>
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "department" | trans }} *</label>
+            <select
+            class="form-control input-sm w3-round"
+            [disabled]="!user.isAdmin()"
+            [(ngModel)]="resource.department_id" >
+              <ng-container *ngFor="let row of departments">
+                <option *ngIf="row.company_id == resource.company_id" value="{{ row.id }}">{{ row.name }}</option>
+              </ng-container>
+            </select>
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "branch" | trans }} *</label>
+            <select  class="form-control input-sm w3-round"
+            (change)="loadBranchInfo()"
+            [disabled]="!user.isAdmin()"
+            [(ngModel)]="resource.branch_id" >
+              <ng-container *ngFor="let row of branches">
+                <option *ngIf="row.company_id == resource.company_id" value="{{ row.id }}">{{ row.name }}</option>
+              </ng-container>
+            </select>
+          </div>
+
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "phone" | trans }} </label>
+            <input type="text" readonly  class="form-control input-sm w3-round" [(ngModel)]="selectedBranch.phone">
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "address" | trans }} </label>
+            <input type="text" readonly  class="form-control input-sm w3-round" [(ngModel)]="selectedBranch.address">
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "city" | trans }} </label>
+            <input type="text" readonly  class="form-control input-sm w3-round" [(ngModel)]="selectedBranch.city.name">
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "area" | trans }} </label>
+            <input type="text" readonly  class="form-control input-sm w3-round" [(ngModel)]="selectedBranch.area.name">
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+        <div class="custom-panel-title w3-light-gray w3-round" >
+          {{ "receiver info" | trans }}
+          <span class="fa fa-refresh btn btn-primary w3-right btn-sm hidden" style="margin: 4px" (click)="reloadReceivers()" ></span>
+        </div>
+        <div class="custom-panel-body row"  >
+
+          <div class="col-lg-12 col-md-12 w3-display-container">
+            <button mat-mini-fab class="w3-indigo" style="margin: 5px" (click)="createReceiver()" >
+              <i class="fa fa-plus"></i>
+            </button>
+
+            <label>{{ "reciever" | trans }} *</label>
+
+
+            <div>
+              <ng-autocomplete
+                [searchKeyword]="'search'"
+                [data]="receivers"
+                (selected)='selectItem($event, "receiver_id")'
+                (inputChanged)="reloadReceivers($event)"
+                (inputCleared)="clearSelected('receiver_id')"
+                [itemTemplate]="itemCompanyTemplate"
+                [notFoundTemplate]="notCompanyFoundTemplate">
+              </ng-autocomplete>
+
+              <ng-template #itemCompanyTemplate let-item>
+              <a [innerHTML]="item? item.name : ''"></a>
+              </ng-template>
+
+              <ng-template #notCompanyFoundTemplate let-notFound>
+              <div [innerHTML]="notFound"></div>
+              </ng-template>
+            </div>
+
+
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "contact person" | trans }} </label>
+            <input type="text" readonly  class="form-control input-sm w3-round" [(ngModel)]="selectedReceiver.company_name">
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "receiver branch" | trans }} </label>
+            <input type="text" readonly  class="form-control input-sm w3-round" [(ngModel)]="selectedReceiver.branch_name">
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "phone" | trans }} </label>
+            <input type="text" readonly  class="form-control input-sm w3-round" [(ngModel)]="selectedReceiver.phone">
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "address" | trans }} </label>
+            <input type="text" readonly  class="form-control input-sm w3-round" [(ngModel)]="selectedReceiver.address">
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "city" | trans }} </label>
+            <input type="text" readonly  class="form-control input-sm w3-round" [(ngModel)]="selectedReceiver.city.name">
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "area" | trans }} </label>
+            <input type="text" readonly  class="form-control input-sm w3-round" [(ngModel)]="selectedReceiver.area.name">
+          </div>
+
+
+          <div class="col-lg-12 col-md-12">
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-12 col-md-12 col-sm-12">
+      <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+        <div class="custom-panel-title w3-light-gray w3-round" >{{ "awb info" | trans }}</div>
+        <div class="custom-panel-body row"  >
+
+          <div class="col-lg-3 col-md-3">
+            <label>{{ "awb city" | trans }} *</label>
+            <select  class="form-control input-sm w3-round"  [(ngModel)]="resource.city_id" >
+              <ng-container *ngFor="let row of cities">
+                <option value="{{ row.id }}">{{ row.name }}</option>
+              </ng-container>
+            </select>
+          </div>
+
+          <div class="col-lg-3 col-md-3">
+            <label>{{ "awb area" | trans }} *</label>
+            <select  class="form-control input-sm w3-round"  [(ngModel)]="resource.area_id" >
+              <ng-container *ngFor="let row of areas">
+                <option *ngIf="row.city_id == resource.city_id" value="{{ row.id }}">{{ row.name }}</option>
+              </ng-container>
+            </select>
+          </div>
+
+          <div class="col-lg-3 col-md-3">
+            <label>{{ "payment_types" | trans }} *</label>
+            <select class="form-control input-sm w3-round"  [(ngModel)]="resource.payment_type_id" >
+              <option *ngFor="let row of paymentTypes" value="{{ row.id }}">{{ row.name }}</option>
+            </select>
+          </div>
+
+          <div class="col-lg-3 col-md-3">
+            <label>{{ "service type" | trans }} *</label>
+            <select class="form-control input-sm w3-round"  [(ngModel)]="resource.service_id" >
+              <option *ngFor="let row of services" value="{{ row.id }}">{{ row.name }}</option>
+            </select>
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "collection" | trans }}</label>
+            <input type="number"  class="form-control input-sm w3-round" [(ngModel)]="resource.collection">
+          </div>
+
+          <div class="col-lg-3 col-md-3">
+            <label>{{ "notes" | trans }} </label>
+            <input type="text"  class="form-control input-sm w3-round" [(ngModel)]="resource.notes">
+          </div>
+
+          <div class="col-lg-3 col-md-3" *ngIf="!resource.id" >
+            <label>{{ "is return" | trans }} </label>
+            <br>
+            <mat-checkbox
+              [(ngModel)]="resource.is_return"
+            ></mat-checkbox>
+          </div>
+
+          <div class="col-lg-12 col-md-12">
+            <br>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-12 col-md-12 col-sm-12">
+      <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+        <div class="custom-panel-title w3-light-gray w3-round" >{{ "weight awb info" | trans }}</div>
+        <div class="custom-panel-body row"  >
+
+          <div class="col-lg-4 col-md-4">
+            <label>{{ "awb category" | trans }} *</label>
+            <select class="form-control input-sm w3-round" (change)="generateDimensions()"  [(ngModel)]="resource.category_id" >
+              <option *ngFor="let row of categories" value="{{ row.id }}">{{ row.name }}</option>
+            </select>
+          </div>
+
+          <div class="col-lg-4 col-md-4">
+            <label>{{ "pieces" | trans }} *</label>
+            <input type="number"  class="form-control input-sm w3-round" (change)="generateDimensions()" [(ngModel)]="resource.pieces">
+          </div>
+
+          <div class="col-lg-4 col-md-4">
+            <label>{{ "weight" | trans }} *</label>
+            <input type="number" [readOnly]="getSelectedCategory().has_many == 1 || getSelectedCategory().fixed"  class="form-control input-sm w3-round" [(ngModel)]="resource.weight">
+          </div>
+
+          <ng-container *ngFor="let row of resource.details index as i" >
+            <div class="col-lg-4 col-md-4">
+              <label>{{ "height" | trans }} </label>
+              <input type="number" (change)="calcAwbWeight()"  class="form-control input-sm w3-round" [(ngModel)]="row.height">
+            </div>
+            <div class="col-lg-4 col-md-4">
+              <label>{{ "width" | trans }} </label>
+              <input type="number" (change)="calcAwbWeight()"  class="form-control input-sm w3-round" [(ngModel)]="row.width">
+            </div>
+            <div class="col-lg-4 col-md-4">
+              <label>{{ "length" | trans }} </label>
+              <input type="number" (change)="calcAwbWeight()"  class="form-control input-sm w3-round" [(ngModel)]="row.length">
+            </div>
+          </ng-container>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-12 col-md-12">
+
+      <button
+        mat-raised-button class="w3-indigo"
+        [disabled]="isSubmit"
+        (click)="send(resource)"
+        style="min-width: 200px;margin: 5px" >
+        <span *ngIf="!isSubmit" >{{ "submit" | trans }}</span>
+        <span *ngIf="isSubmit" class="fa fa-spin fa-spinner" ></span>
+      </button>
+
+      <button
+        *ngIf="!resource.id"
+        mat-raised-button class="w3-orange"
+        (click)="initResource();selectedReceiver={}"
+        style="margin: 5px">
+        <span  >{{ "reset" | trans }}</span>
+      </button>
+
+      <button
+        *ngIf="canEdit"
+        mat-raised-button class="w3-teal"
+        (click)="$('#editAwbModal').modal('show')"
+        style="margin: 5px">
+        <span  >{{ "Edit Awb" | trans }}</span>
+      </button>
+
+      <button
+        *ngIf="resource.id"
+        mat-raised-button class="w3-dark-gray"
+        (click)="printAwb(resource.id)"
+        style="margin: 5px">
+        <span  >{{ "Print Awb" | trans }}</span>
+      </button>
+
+    </div>
+
+  </div>
+
+
+</div>
+
+
+<app-receiver-form [resource]="receiver" ></app-receiver-form>
+
+
+<app-awb-edit-dialog *ngIf="canEdit" ></app-awb-edit-dialog>

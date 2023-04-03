@@ -1,0 +1,234 @@
+<div class="w3-display-container">
+  <div class="w3-block w3-padding w3-display-topright"   >
+    <button
+    style="margin: 5px;padding: 7px"
+      class="w3-round w3-button material-shadow btn-sm w3-red"
+      (click)="crud.removeSelected()"
+      *ngIf="crud.canRemove && crud.selectedResources.size() > 0"  >
+      {{ "remove selected" | trans }} <i class="fa fa-trash"></i>
+    </button>
+
+    <button
+    style="margin: 5px;padding: 7px"
+      class="w3-round w3-button material-shadow btn-sm w3-teal"
+      *ngIf="canPrintSelected && crud.selectedResources.size() > 0"
+      (click)="printSelected()"  >
+      {{ "print selected" | trans }} <i class="fa fa-print"></i>
+    </button>
+
+    <button
+    style="margin: 5px;padding: 7px"
+    (click)="crud.excel()"
+      class="w3-round w3-button material-shadow btn-sm w3-green"  >
+      {{ "excel" | trans }} <i class="fa fa-file-excel-o"></i>
+    </button>
+
+    <button
+    style="margin: 5px;padding: 7px"
+    (click)="crud.pdf()"
+      class="w3-round w3-button material-shadow btn-sm w3-orange"  >
+      {{ "pdf" | trans }} <i class="fa fa-file-pdf-o"></i>
+    </button>
+
+    <button
+    style="margin: 5px;padding: 7px"
+    (click)="crud.word()"
+      class="w3-round w3-button material-shadow btn-sm w3-blue"  >
+      {{ "word" | trans }} <i class="fa fa-file-word-o"></i>
+    </button>
+
+    <button
+    style="margin: 5px;padding: 7px"
+    (click)="crud.print()"
+      class="w3-round w3-button material-shadow btn-sm w3-dark-gray"  >
+      {{ "print" | trans }} <i class="fa fa-print"></i>
+    </button>
+
+    <button
+    style="margin: 5px;padding: 7px"
+    (click)="crud.filter = {};crud.get(true)"
+      class="w3-round w3-button material-shadow btn-sm w3-indigo"  >
+      {{ "load" | trans }} <i class="fa fa-refresh"></i>
+    </button>
+
+    <button
+    style="margin: 5px;padding: 7px"
+    *ngIf="crud.displayImport"
+    (click)="crud.import()"
+      class="w3-round w3-button material-shadow btn-sm w3-green"  >
+      {{ "import from excel" | trans }} <i class="fa fa-upload"></i>
+    </button>
+
+    <button
+    style="margin: 5px;padding: 7px"
+    *ngIf="crud.displayLoadTrash"
+    (click)="crud.loadTrash()"
+      class="w3-round w3-button material-shadow btn-sm w3-deep-orange"  >
+      {{ "view trash" | trans }} <i class="fa fa-trash"></i>
+    </button>
+
+    <ng-content></ng-content>
+
+  </div>
+  <div class="w3-padding w3-display-topright"  >
+
+    <button
+    style="margin: 5px;padding: 7px"
+    (click)="crud.create()"
+      class="w3-round w3-button material-shadow btn-sm w3-indigo"   >
+      <i class="fa fa-plus"></i> {{ "add" | trans }}
+    </button>
+
+    <button
+    style="margin: 5px;padding: 7px"
+    (click)="$('#colTable').modal('show')"
+      class="w3-round w3-button material-shadow btn-sm w3-teal"   >
+      <i class="fa fa-filter"></i> {{ "toggle cols" | trans }}
+    </button>
+
+    <button
+    style="margin: 5px;padding: 7px"
+    (click)="crud.$('.filter').slideToggle(500)"
+      class="w3-round w3-button material-shadow btn-sm w3-indigo"   >
+      <i class="fa fa-filter"></i> {{ "filter" | trans }}
+    </button>
+
+
+    <input type="text" [(ngModel)]="crud.filter.search" class="form-control w3-round hidden" placeholder="{{ 'search' | trans }}" >
+
+
+  </div>
+
+    <div class="text-center w3-padding">
+      <b>
+        {{ crud.title | trans }}
+      </b>
+      <br>
+      <br>
+    </div>
+  <div class="table-responsive" style="height: 300px;" >
+    <table class="excel-table table-bordered text-center text-center" id="printable" #table >
+
+      <tr class="w3-light-gray" >
+        <th *ngIf="selectedCols.has('#')" >
+          <div style="width: 60px;" >
+            <mat-checkbox
+              [checked]="crud.selectedAllToggle"
+              (change)="crud.selectAll()"></mat-checkbox>
+          </div>
+        </th>
+        <ng-container  *ngFor="let col of crud.fillable" >
+          <th class="w3-padding" *ngIf="selectedCols.has(col.name)" >
+
+            <span >
+              <span *ngIf="col.text" >{{ col.text | trans }}</span>
+              <span *ngIf="!col.text" >{{ col.name | trans }}</span>
+            </span>
+          </th>
+        </ng-container>
+      </tr>
+      <tr *ngIf="crud.loading"  >
+        <td class="w3-text-indigo text-center" [colSpan]="crud.fillable.length" >
+          <i class="fa fa-spin fa-spinner"></i>
+        </td>
+      </tr>
+      <ng-container *ngFor="let item of crud.data index as i" >
+        <tr  *ngIf="!crud.loading" class="{{ crud.selectedResources.has(item.id) || item.deleted_at? 'w3-pale-red' : '' }}" >
+          <td  *ngIf="selectedCols.has('#')" >
+            <div class="w3-center text-center hidden" >
+              <mat-slide-toggle
+              [checked]="crud.selectedResources.has(item.id)"
+              (change)="crud.toggle(item)"
+              ></mat-slide-toggle>
+            </div>
+            <div style="width: 60px;" >
+              <mat-checkbox
+                [checked]="crud.selectedResources.has(item.id)"
+                (change)="crud.toggle(item)"></mat-checkbox>
+            </div>
+          </td>
+          <ng-container *ngFor="let col of crud.fillable" >
+
+            <td *ngIf="!col.action && col.type != 'image' && !col.object && selectedCols.has(col.name) && col.type != 'checkbox'" >
+              {{ item[col.name] }}
+            </td>
+
+            <td *ngIf="!col.action && col.type == 'checkbox' && !col.object && selectedCols.has(col.name)" >
+              <mat-slide-toggle
+              [disabled]="true"
+              [(ngModel)]="item[col.name]"
+              (change)="crud.update(item)"
+              ></mat-slide-toggle>
+            </td>
+
+            <td *ngIf="!col.action && col.type != 'image' && col.object && selectedCols.has(col.name) && col.type != 'checkbox'" >
+              {{ item[col.name]? item[col.name][col.data] : '' }}
+            </td>
+
+            <td *ngIf="col.type == 'image' && !col.action && selectedCols.has(col.name)" >
+              <a *ngIf="item[col.name]" [href]="item[col.name]" target="_blank"  >
+                <img [src]="item[col.name]" class="w3-round" height="20px" style="margin: 3px" >
+              </a>
+            </td>
+
+            <td *ngIf="col.action && selectedCols.has(col.name)" >
+              <button
+              class="w3-button {{ col.class }}"
+              *ngIf="col.permission"  (click)="col.action(item, i)" ></button>
+            </td>
+
+          </ng-container>
+        </tr>
+      </ng-container>
+
+    </table>
+  </div>
+  <br>
+  <div class="w3-padding" permission="table_count" >
+    <span *ngIf="crud.paging && crud.response" >
+      <b>{{ "count" | trans }}</b> : {{ crud.response.total }}
+    </span>
+    <span *ngIf="!crud.paging && crud.data" >
+      <b>{{ "count" | trans }}</b> : {{ crud.data.length }}
+    </span>
+  </div>
+
+  <app-paginator
+    *ngIf="crud.paging"
+    [response]="crud.response"
+    [filter]="crud.filter"
+    [get]="crud.reload" ></app-paginator>
+
+
+
+</div>
+
+
+<div class="modal fade" id="colTable" >
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content modal-sm w3-animate-top">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center">{{ "table colmns" }}</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <tr *ngFor="let row of crud.fillable" >
+            <th>
+              {{ row.name }}
+            </th>
+            <td>
+              <mat-checkbox
+              [checked]="selectedCols.has(row.name)"
+              (change)="toggle(row.name)"
+              ></mat-checkbox>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{ "close" | trans }}</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

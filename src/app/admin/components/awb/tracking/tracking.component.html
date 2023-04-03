@@ -1,0 +1,178 @@
+
+<!-- form modal -->
+<div class="modal fade" id="trackingModal" role="dialog">
+  <div class="modal-dialog modal-lg w3-block" role="document">
+    <div class="modal-content light-gray w3-animate-top">
+      <div class="modal-header">
+        <h4 class="modal-title w3-center w3-xlarge w3-text-indigo">
+          <span   >{{ "tracking awb" | trans }}</span> {{ resource.code }}
+
+        </h4>
+      </div>
+      <div class="w3-block main-background">
+        <div class="track-background row">
+          <div class="col-lg-9 col-md-9">
+
+          <div class="md-stepper-horizontal orange" style="background-color: transparent!important;" >
+            <div
+            *ngFor="let row of steppers index as i"
+            class="md-step {{ stepperHashTable.has(row) || currentStatus.code == awbStatusCode.DELIVERED? 'active editable' : '' }}  "  >
+              <div class="md-step-circle"><span>{{ i + 1 }}</span></div>
+              <div class="md-step-title">{{ row | trans }}</div>
+              <div class="md-step-bar-left"></div>
+              <div class="md-step-bar-right"></div>
+            </div>
+            <!--
+            <div class="md-step active editable">
+              <div class="md-step-circle"><span>2</span></div>
+              <div class="md-step-title">Shipping</div>
+              <div class="md-step-optional">Optional</div>
+              <div class="md-step-bar-left"></div>
+              <div class="md-step-bar-right"></div>
+            </div>
+            <div class="md-step active">
+              <div class="md-step-circle"><span>3</span></div>
+              <div class="md-step-title">Payment</div>
+              <div class="md-step-bar-left"></div>
+              <div class="md-step-bar-right"></div>
+            </div>
+            <div class="md-step">
+              <div class="md-step-circle"><span>4</span></div>
+              <div class="md-step-title">Review</div>
+              <div class="md-step-bar-left"></div>
+              <div class="md-step-bar-right"></div>
+            </div>
+            -->
+          </div>
+          <div class="md-stepper-horizontal orange" style="background-color: transparent!important;"  >
+            <div class="md-step active">
+              <div class="md-step-circle w3-xlarge" style="background-color: transparent!important;color: orangered;" ><span><i class="fa fa-circle-o"></i></span></div>
+              <div class="md-step-title">{{"Sender" | trans}}</div>
+              <div class="md-step-optional">
+                <b *ngIf="resource.company" style="color: black" >
+                  {{ resource.company.city? resource.company.city.name : '' }},
+                  {{ resource.company.area? resource.company.area.name : '' }}
+                </b>
+              </div>
+              <div class="md-step-bar-left" style="border-style: dashed;" ></div>
+              <div class="md-step-bar-right" style="border-style: dashed;"></div>
+            </div>
+            <div class="md-step active">
+              <div class="md-step-circle w3-xlarge" style="background-color: transparent!important;color: orangered;" ><span><i class="fa fa-map-marker"></i></span></div>
+              <div class="md-step-title">{{"Receiver" | trans}}</div>
+              <div class="md-step-optional">
+                <b *ngIf="resource.receiver" style="color: black" >
+                  {{ resource.receiver.city? resource.receiver.city.name : '' }},
+                  {{ resource.receiver.area? resource.receiver.area.name : '' }}
+                </b>
+              </div>
+              <div class="md-step-bar-left" style="border-style: dashed;"></div>
+              <div class="md-step-bar-right" style="border-style: dashed;"></div>
+            </div>
+          </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div class="row">
+
+          <div class="col-lg-6 col-md-6" *ngIf="statusHashTable.has(resource.status_id)" >
+            <div class="row" *ngIf="statusHashTable.get(resource.status_id).code == awbStatusCode.DELIVERED" >
+
+              <div class="col-lg-6">
+                <label class="w3-xlarge w3-text-indigo">{{ "receiver name" | trans }} </label>
+                <br>
+                <input type="text"
+                (change)="sendAwbInfo()"
+                class="app-form w3-round form-control" [(ngModel)]="resource.receiver_name" >
+              </div>
+
+              <div class="col-lg-6">
+                <label class="w3-xlarge w3-text-indigo">{{ "receiver title" | trans }} </label>
+                <br>
+                <input type="text"
+                (change)="sendAwbInfo()"
+                class="app-form w3-round form-control" [(ngModel)]="resource.receiver_title" >
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <div *ngIf="canChangeAwbStatus" >
+              <label class="w3-xlarge w3-text-indigo" >{{ "status" | trans }} *</label>
+              <select
+              *ngIf="!resource.is_final || canChangeOk"
+              class="form-control w3-round app-form"
+              [(ngModel)]="resource.status_id"  >
+                <ng-container *ngFor="let item of status">
+                  <option *ngIf="item.type == 'awb'" value="{{ item.id }}">{{ item.name }}</option>
+                </ng-container>
+              </select>
+              <div
+              *ngIf="resource.is_final && !canChangeOk"
+              class="alert alert-danger">
+                <i class="fa fa-exclamation-triangle w3-margin-left w3-margin-righ"  ></i> {{ "cant change status" }}
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+        <br>
+
+        <div class="table-responsive w3-white text-center" style="height: 200px;" >
+          <table class="table table-bordered text-center">
+            <tr class="w3-dark-gray"  style="background-color: #616161!important;" >
+              <th class="w3-dark-gray"  style="background-color: #616161!important;" >{{ "#" }}</th>
+              <th class="w3-dark-gray"  style="background-color: #616161!important;" >{{ "awb" | trans }}</th>
+              <th class="w3-dark-gray"  style="background-color: #616161!important;" >{{ "sender" | trans }}</th>
+              <th class="w3-dark-gray"  style="background-color: #616161!important;" >{{ "status" | trans }}</th>
+              <th class="w3-dark-gray"  style="background-color: #616161!important;" >{{ "user" | trans }}</th>
+              <th class="w3-dark-gray"  style="background-color: #616161!important;" >{{ "date" | trans }}</th>
+              <th class="w3-dark-gray"  style="background-color: #616161!important;" >{{ "time" | trans }}</th>
+              <th class="w3-dark-gray"  style="background-color: #616161!important;" >{{ "remove" | trans }}</th>
+            </tr>
+
+            <tr *ngFor="let row of history index as i" >
+             <td>{{ i + 1 }}</td>
+             <td>{{ resource.code }}</td>
+             <td>{{ resource.company? resource.company.name : '' }}</td>
+             <td>{{ row.status? row.status.name : '' }}</td>
+             <td>{{ row.user? row.user.name : '' }}</td>
+             <td>{{ row.created_at | date }}</td>
+             <td>{{ row.created_at | date: 'shortTime' }}</td>
+             <td>
+               <button *ngIf="canRemoveTrack" (click)="removeRow(row, i)" class="fa fa-trash w3-text-red"></button>
+             </td>
+            </tr>
+         </table>
+        </div>
+      </div>
+      <div class="modal-footer text-center w3-center">
+
+          <button type="button"
+          class=""
+          style="margin: 5px"
+          mat-raised-button
+          data-dismiss="modal" >{{ "close" | trans }}</button>
+
+
+          <button class="w3-indigo"
+          *ngIf="canChangeAwbStatus"
+          [disabled]="isSubmit"
+          style="margin: 5px"
+          mat-raised-button
+          (click)="send()" >
+          <span *ngIf="!isSubmit" >
+            <span  >{{ "change status" | trans }}</span>
+          </span>
+          <span *ngIf="isSubmit" class="fa fa-spin fa-spinner" ></span>
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

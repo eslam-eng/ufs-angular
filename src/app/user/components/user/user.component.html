@@ -1,0 +1,64 @@
+<div class="col-lg-12 col-md-12  " style="padding: 0px!important">
+  <app-breadcrumb [breadcrumbList]="breadcrumbList" ></app-breadcrumb>
+
+  <div class="row">
+
+    <div class="col-lg-3 col-md-3">
+      <label>{{ 'search' | trans }}</label>
+      <br>
+      <input type="text"
+      [(ngModel)]="filter.search"
+      (change)="get(true)"
+      class="form-control input-sm w3-block"
+      style="border-radius: 8px;"
+      placeholder="{{ 'search' | trans }}" >
+    </div>
+
+    <div class="col-lg-3 col-md-3">
+      <label>{{ 'filter with department' | trans }}</label>
+      <br>
+      <select
+      class="form-control input-sm w3-block"
+      (change)="get(true)"
+      style="border-radius: 8px;"
+        [(ngModel)]="filter.deparmtent_id" >
+        <option *ngFor="let row of departments" value="{{ row.id }}">{{ row.name }}</option>
+      </select>
+    </div>
+
+    <div class="col-lg-3 col-md-3">
+      <label>{{ 'filter with company' | trans }}</label>
+      <br>
+      <select
+      class="form-control input-sm w3-block"
+      (change)="get(true)"
+      style="border-radius: 8px;"
+        [(ngModel)]="filter.company_id" >
+        <option *ngFor="let row of companies" value="{{ row.id }}">{{ row.name }}</option>
+      </select>
+    </div>
+
+    <div class="col-lg-3 col-md-3">
+      <label>{{ 'filter with branch' | trans }}</label>
+      <br>
+      <select
+      class="form-control input-sm w3-block"
+      (change)="get(true)"
+      style="border-radius: 8px;"
+        [(ngModel)]="filter.branch_id" >
+        <ng-container *ngFor="let row of branches" >
+          <option *ngIf="row.company_id == filter.company_id" value="{{ row.id }}">{{ row.name }}</option>
+        </ng-container>
+      </select>
+    </div>
+
+  </div>
+  <br>
+
+<div class="w3-block material-shadow safe-box w3-white w3-display-container" style="padding: 0px!important" >
+
+  <app-table [crud]="this" ></app-table>
+</div>
+
+</div>
+<app-user-form [resource]="resource" [isUpdate]="isUpdate" [action]="reload" ></app-user-form>

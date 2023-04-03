@@ -1,0 +1,154 @@
+
+<!-- form modal -->
+<div class="modal fade" id="trackingModal" role="dialog">
+  <div class="modal-dialog modal-lg w3-block" role="document">
+    <div class="modal-content light-gray w3-animate-top">
+      <div class="modal-header">
+        <h4 class="modal-title w3-center w3-xlarge w3-text-indigo">
+          <span   >{{ "tracking Pickup" | trans }}</span> {{ resource.code }}
+
+        </h4>
+      </div>
+      <div class="w3-block main-background">
+        <div class="track-background row">
+          <div class="col-lg-9 col-md-9">
+
+          <div class="md-stepper-horizontal orange" style="background-color: transparent!important;" >
+            <div
+            *ngFor="let row of steppers index as i"
+            class="md-step {{ stepperHashTable.has(row) || resource.status_id == delivered.id? 'active editable' : '' }}  "  >
+              <div class="md-step-circle"><span>{{ i + 1 }}</span></div>
+              <div class="md-step-title">{{ row | trans }}</div>
+              <div class="md-step-bar-left"></div>
+              <div class="md-step-bar-right"></div>
+            </div>
+            <!--
+            <div class="md-step active editable">
+              <div class="md-step-circle"><span>2</span></div>
+              <div class="md-step-title">Shipping</div>
+              <div class="md-step-optional">Optional</div>
+              <div class="md-step-bar-left"></div>
+              <div class="md-step-bar-right"></div>
+            </div>
+            <div class="md-step active">
+              <div class="md-step-circle"><span>3</span></div>
+              <div class="md-step-title">Payment</div>
+              <div class="md-step-bar-left"></div>
+              <div class="md-step-bar-right"></div>
+            </div>
+            <div class="md-step">
+              <div class="md-step-circle"><span>4</span></div>
+              <div class="md-step-title">Review</div>
+              <div class="md-step-bar-left"></div>
+              <div class="md-step-bar-right"></div>
+            </div>
+            -->
+          </div>
+          <div class="md-stepper-horizontal orange" style="background-color: transparent!important;"  >
+            <div class="md-step active">
+              <div class="md-step-circle w3-xlarge" style="background-color: transparent!important;color: orangered;" ><span><i class="fa fa-circle-o"></i></span></div>
+              <div class="md-step-title">{{"Account Name" | trans}}</div>
+              <div class="md-step-optional">
+                <span *ngIf="resource.company" >
+                  {{ resource.company? resource.company.name : '' }}
+                </span>
+              </div>
+              <div class="md-step-bar-left" style="border-style: dashed;" ></div>
+              <div class="md-step-bar-right" style="border-style: dashed;"></div>
+            </div>
+            <div class="md-step active">
+              <div class="md-step-circle w3-xlarge" style="background-color: transparent!important;color: orangered;" ><span><i class="fa fa-map-marker"></i></span></div>
+              <div class="md-step-title">{{"Courier" | trans}}</div>
+              <div class="md-step-optional">
+                <span *ngIf="resource.courier" >
+                  {{ resource.courier? resource.courier.name : '' }}
+                </span>
+              </div>
+              <div class="md-step-bar-left" style="border-style: dashed;"></div>
+              <div class="md-step-bar-right" style="border-style: dashed;"></div>
+            </div>
+          </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div class="row">
+
+          <div class="col-lg-12 col-md-12 text-center">
+            <div *ngIf="canChangepickupstatus" >
+              <label class="w3-xlarge w3-text-indigo" >{{ "status" | trans }} *</label>
+              <select
+              *ngIf="!resource.is_final || canChangeOk"
+              class="form-control w3-round app-form"
+              [(ngModel)]="resource.status_id"  >
+                <ng-container *ngFor="let item of status">
+                  <option *ngIf="item.type == 'pickup'" value="{{ item.id }}">{{ item.name }}</option>
+                </ng-container>
+              </select>
+              <div
+              *ngIf="resource.is_final && !canChangeOk"
+              class="alert alert-danger">
+                <i class="fa fa-exclamation-triangle w3-margin-left w3-margin-righ"  ></i> {{ "cant change status" }}
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+        <br>
+
+        <div class="table-responsive w3-white text-center" style="height: 200px;" >
+          <table class="table table-bordered text-center">
+            <tr class="w3-dark-gray"  style="background-color: #616161!important;" >
+              <th class="w3-dark-gray"  style="background-color: #616161!important;" >{{ "#" }}</th>
+              <th class="w3-dark-gray"  style="background-color: #616161!important;" >{{ "pickup" | trans }}</th>
+              <th class="w3-dark-gray"  style="background-color: #616161!important;" >{{ "account name" | trans }}</th>
+              <th class="w3-dark-gray"  style="background-color: #616161!important;" >{{ "status" | trans }}</th>
+              <th class="w3-dark-gray"  style="background-color: #616161!important;" >{{ "user" | trans }}</th>
+              <th class="w3-dark-gray"  style="background-color: #616161!important;" >{{ "date" | trans }}</th>
+              <th class="w3-dark-gray"  style="background-color: #616161!important;" >{{ "time" | trans }}</th>
+              <th class="w3-dark-gray"  style="background-color: #616161!important;" >{{ "remove" | trans }}</th>
+            </tr>
+
+            <tr *ngFor="let row of history index as i" >
+             <td>{{ i + 1 }}</td>
+             <td>{{ resource.code }}</td>
+             <td>{{ resource.company? resource.company.name : '' }}</td>
+             <td>{{ row.status? row.status.name : '' }}</td>
+             <td>{{ row.user? row.user.name : '' }}</td>
+             <td>{{ row.created_at | date }}</td>
+             <td>{{ row.created_at | date: 'shortTime' }}</td>
+             <td>
+               <button *ngIf="canRemoveTrack" (click)="removeRow(row, i)" class="fa fa-trash w3-text-red"></button>
+             </td>
+            </tr>
+         </table>
+        </div>
+      </div>
+      <div class="modal-footer text-center w3-center">
+
+          <button type="button"
+          class=""
+          style="margin: 5px"
+          mat-raised-button
+          data-dismiss="modal" >{{ "close" | trans }}</button>
+
+
+          <button class="w3-indigo"
+          *ngIf="canChangepickupstatus"
+          [disabled]="isSubmit"
+          style="margin: 5px"
+          mat-raised-button
+          (click)="send()" >
+          <span *ngIf="!isSubmit" >
+            <span  >{{ "change status" | trans }}</span>
+          </span>
+          <span *ngIf="isSubmit" class="fa fa-spin fa-spinner" ></span>
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

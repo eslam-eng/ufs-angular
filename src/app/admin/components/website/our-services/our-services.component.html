@@ -1,0 +1,20 @@
+<app-breadcrumb [breadcrumbList]="breadcrumbList" ></app-breadcrumb>
+<br>
+<!-- The toolbar will be rendered in this container. -->
+<div id="toolbar-container"></div>
+
+<!-- This container will become the editable. -->
+<textarea name="editor1" id="editor1" [innerHTML]="html" >
+  <p>This is the initial editor content.</p>
+</textarea>
+
+
+<br>
+<button
+mat-raised-button
+[disabled]="isSubmit"
+(click)="save()"
+class="btn w3-indigo" >
+  <i *ngIf="isSubmit" class="fa fa-spin fa-spinner"></i>
+  <i *ngIf="!isSubmit" class="">{{ "save" | trans }}</i>
+</button>

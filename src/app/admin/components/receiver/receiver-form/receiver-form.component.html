@@ -1,0 +1,114 @@
+
+<!-- form modal -->
+<div class="modal fade" id="receiverModal" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content w3-animate-top">
+      <div class="modal-header">
+        <h4 class="modal-title text-center w3-xlarge">
+          <span *ngIf="isUpdate" >{{ "edit receiver" | trans }}</span>
+          <span *ngIf="!isUpdate" >{{ "add receiver" | trans }}</span>
+
+        </h4>
+      </div>
+      <div class="modal-body ">
+        <div class="row">
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "name" | trans }} *</label>
+            <input type="text" class="form-control input-sm"  [(ngModel)]="resource.name" >
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "address" | trans }} *</label>
+            <input type="text" class="form-control input-sm"  [(ngModel)]="resource.address" >
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "address2" | trans }}</label>
+            <input type="text" class="form-control input-sm"  [(ngModel)]="resource.address2" >
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "company_name" | trans }}</label>
+            <input type="text" class="form-control input-sm"  [(ngModel)]="resource.company_name" >
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "branch_name" | trans }}</label>
+            <input type="text" class="form-control input-sm"  [(ngModel)]="resource.branch_name" >
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "phone" | trans }}</label>
+            <input type="text" class="form-control input-sm"  [(ngModel)]="resource.phone" >
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "city" | trans }} *</label>
+            <select class="form-control input-sm"  [(ngModel)]="resource.city_id"  >
+              <option *ngFor="let item of cities" value="{{ item.id }}">{{ item.name }}</option>
+            </select>
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "area" | trans }} *</label>
+            <select class="form-control input-sm"  [(ngModel)]="resource.area_id"  >
+              <ng-container *ngFor="let item of areas">
+                <option *ngIf="item.city_id == resource.city_id" value="{{ item.id }}">{{ item.name }}</option>
+              </ng-container>
+            </select>
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "company" | trans }} *</label>
+            <select class="form-control input-sm"  [(ngModel)]="resource.company_id"  >
+              <option *ngFor="let item of companies" value="{{ item.id }}">{{ item.name }}</option>
+            </select>
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "branch" | trans }} *</label>
+            <select class="form-control input-sm"  [(ngModel)]="resource.branch_id"  >
+              <ng-container *ngFor="let item of branches">
+                <option *ngIf="item.company_id == resource.company_id" value="{{ item.id }}">{{ item.name }}</option>
+              </ng-container>
+            </select>
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "reference" | trans }}</label>
+            <input type="text" class="form-control input-sm"  [(ngModel)]="resource.referance" >
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <label>{{ "title" | trans }}</label>
+            <input type="text" class="form-control input-sm"  [(ngModel)]="resource.title" >
+          </div>
+
+
+        </div>
+      </div>
+      <div class="modal-footer text-center w3-center">
+
+          <button type="button"
+          class=""
+          style="margin: 5px"
+          mat-raised-button
+          data-dismiss="modal" >{{ "close" | trans }}</button>
+
+          <button class="w3-indigo"
+          [disabled]="isSubmit"
+          style="margin: 5px"
+          mat-raised-button
+          (click)="send(resource)" >
+          <span *ngIf="!isSubmit" >
+            <span *ngIf="!resource.id" >{{ "add" | trans }}</span>
+            <span *ngIf="resource.id" >{{ "edit" | trans }}</span>
+          </span>
+          <span *ngIf="isSubmit" class="fa fa-spin fa-spinner" ></span>
+        </button>
+
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -1,0 +1,63 @@
+<div class="col-lg-12 col-md-12  " style="padding: 0px!important">
+  <app-breadcrumb [breadcrumbList]="breadcrumbList" ></app-breadcrumb>
+
+  <div class="row filter" style="display: none;" >
+
+    <div class="col-lg-3 col-md-3">
+      <label>{{ 'search' | trans }}</label>
+      <br>
+      <input type="text"
+      [(ngModel)]="filter.search"
+      (change)="get()"
+      class="form-control input-sm w3-block"
+      style="border-radius: 8px;"
+      placeholder="{{ 'search' | trans }}" >
+    </div>
+
+    <div class="col-lg-3 col-md-3">
+      <label>{{ 'filter with city' | trans }}</label>
+      <br>
+      <select
+      class="form-control input-sm w3-block"
+      (change)="get()"
+      style="border-radius: 8px;"
+        [(ngModel)]="filter.city_id" >
+        <option value="">{{ "select all" | trans }}</option>
+        <option *ngFor="let item of cities" value="{{ item.id }}">{{ item.name }}</option>
+      </select>
+    </div>
+
+    <div class="col-lg-3 col-md-3">
+      <label>{{ 'filter with area' | trans }}</label>
+      <br>
+      <select
+      class="form-control input-sm w3-block"
+      (change)="get()"
+      style="border-radius: 8px;"
+        [(ngModel)]="filter.area_id" >
+        <option value="">{{ "select all" | trans }}</option>
+        <ng-container *ngFor="let item of areas">
+          <option *ngIf="item.city_id == filter.city_id" value="{{ item.id }}">{{ item.name }}</option>
+        </ng-container>
+      </select>
+    </div>
+
+  </div>
+  <br>
+
+<div class="w3-block material-shadow safe-box w3-white w3-display-container" style="padding: 0px!important" >
+
+  <app-table [crud]="self" ></app-table>
+
+</div>
+
+</div>
+
+<div appAuth class="w3-display-bottomright w3-padding" style="position: fixed;" >
+  <button  mat-fab class="w3-indigo" *ngIf="canAdd" (click)="create()" >
+    <i class="fa fa-plus"></i>
+  </button>
+</div>
+
+
+<app-company-form  [resource]="resource" [isUpdate]="isUpdate" [action]="reload"  ></app-company-form>

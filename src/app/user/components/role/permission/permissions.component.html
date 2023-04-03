@@ -1,0 +1,54 @@
+
+<div class="w3-block">
+  <div class="w3-white material-shadow safe-box">
+    <div class="safe-box-header w3-large" style="padding: 5px!important">
+      {{ "permissions" | trans }} <i class="fa fa-angle-left" ></i> {{ role.name }}
+    </div>
+    <div class="border-bottom-dashed"></div>
+    <br>
+
+    <div class="row">
+
+      <div class="col-lg-4 col-md-4 col-sm-4" *ngFor="let group of groups" >
+        <div class="custom-panel w3-display-container w3-round application-panel student-info-panel group-{{ group.id }}">
+          <div class="custom-panel-title">
+            <mat-slide-toggle
+                      #selectAllMatSlider
+                      (change)="selectAll(group, selectAllMatSlider.checked)" ></mat-slide-toggle>
+                      {{ group.name }}
+          </div>
+          <div class="custom-panel-body table-responsive w3-padding w3-center" style="height: 250px;" >
+            <br>
+            <ul class="w3-ul">
+              <li *ngFor="let item of group.permissions" >
+                <div class="media">
+                  <div class="media-left">
+                    <mat-slide-toggle
+                      [checked]="permissionId.has(item.id)"
+                      (change)="togglePermissions(item.id)" ></mat-slide-toggle>
+                  </div>
+                  <div class="media-body">
+                    <div class="media-heading text-right ">{{ item.display_name }}</div>
+                  </div>
+                </div>
+              </li>
+             </ul>
+          </div>
+
+
+        </div>
+      </div>
+
+    </div>
+    <div class="box-footer">
+      <button [disabled]="isSubmitted" (click)="updatePermissions()" type="submit" class="btn btn-primary">
+        <i *ngIf="!isSubmitted" >{{ "add" | trans }}</i>
+        <i *ngIf="isSubmitted" class="fa fa-spin fa-spinner" ></i>
+      </button>
+
+    </div>
+
+
+  </div>
+</div>
+

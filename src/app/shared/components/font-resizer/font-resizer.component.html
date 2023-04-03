@@ -1,0 +1,28 @@
+<div class="modal fade " id="fontResizerModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center">{{ "font size resizer" | trans }}</h4>
+      </div>
+      <div class="modal-body">
+        <label for="">{{ "text font" | trans }}</label>
+        <br>
+        <input type="text" class="form-control" value="{{ 'text font size' | trans }}" >
+        <br>
+        <mat-slider
+          thumbLabel
+          [displayWith]="tickInterval"
+          (change)="fontResizeAction()"
+          [(ngModel)]="formFont"
+          class="w3-block"
+          [tickInterval]="formFont"
+          min="12"
+          max="30"></mat-slider>
+      </div>
+      <div class="modal-footer">
+        <button mat-raised-button type="button"  data-dismiss="modal">{{ "close" | trans }}</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
