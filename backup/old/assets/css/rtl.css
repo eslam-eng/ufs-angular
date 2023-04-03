@@ -1,0 +1,17 @@
+.pull-left {
+    float: right !important;
+}
+
+.pull-right {
+    float: left !important;
+}
+
+.w3-display-topright {
+    left: 0px!important;
+    right: inherit;
+}
+
+.w3-display-topleft {
+    right: 0px!important;
+    left: inherit;
+}
