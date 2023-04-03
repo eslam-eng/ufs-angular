@@ -19,9 +19,9 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.html [L]
 </IfModule>
-RewriteCond %{HTTP_HOST} ^uniserval\.ufs\-eg\.com$ [OR]
-RewriteCond %{HTTP_HOST} ^www\.uniserval\.ufs\-eg\.com$
-RewriteRule ^/?$ "http\:\/\/uniserval\.ufs\-eg\.com\/" [R=301,L]
+RewriteCond %{HTTP_HOST} ^uniserval\.pixiagency\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.uniserval\.pixiagency\.com$
+RewriteRule ^/?$ "http\:\/\/uniserval\.pixiagency\.com\/" [R=301,L]
 
 # BEGIN cPanel-generated php ini directives, do not edit
 # Manual editing of this file may result in unexpected behavior.
