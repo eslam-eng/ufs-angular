@@ -4754,7 +4754,7 @@ var UserService = /** @class */ (function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "environment", function() { return environment; });
 var environment = {
-    production: false,
+    production: true,
     website: 'http://ufs.pixiagency.com/',
     //publicUrl   : window.location.origin,
     //apiUrl: window.location.origin + '/api',//'http://localhost/UFS-Back/public/api',
